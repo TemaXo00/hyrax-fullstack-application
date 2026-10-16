@@ -1,0 +1,68 @@
+# Git
+.git/
+.gitignore
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+.npm/
+.turbo/
+.nx/
+.eslintcache
+*.tsbuildinfo
+
+# OS
+.DS_Store
+*.swp
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.vs/
+
+# Build
+dist/
+build/
+lib/
+out/
+coverage/
+
+# Docker
+.docker/
+docker-compose*.yml
+
+# Env
+.env
+.env.*
+
+# Tests
+__tests__/
+*.test.ts
+*.spec.ts
+test/
+tests/
+
+# Temp
+tmp/
+temp/
+
+# Archives
+*.tgz
+*.gz
+*.zip
+*.tar
+
+# Docs
+docs/
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE.md

@@ -1,0 +1,69 @@
+[
+  {
+    "label": "GENERATE: Nest App",
+    "command": "npx nx g @nx/nest:app --linter eslint --e2eTestRunner none --unitTestRunner none",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "GENERATE: Vue App",
+    "command": "npx nx g @nx/vue:app --bundler vite --linter eslint --unitTestRunner none --e2eTestRunner none --inSourceTest false --routing true -s css",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+
+  {
+    "label": "GENERATE: Nest Lib",
+    "command": "npx nx g @nx/nest:lib --buildable --linter eslint --unitTestRunner none",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "GENERATE: Vue lib",
+    "command": "npx nx g @nx/vue:lib --linter eslint --unitTestRunner none --bundler vite --component true --inSourceTest false --minimal",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "GENERATE: TypeScript lib",
+    "command": "npx nx g @nx/js:lib --bundler tsc --linter eslint --unitTestRunner none --minimal",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "CODE-STYLE: Linter Fix",
+    "command": "npm run all:lint-fix",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "CODE-STYLE: Prettier Fix",
+    "command": "npm run all:prettier-fix",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "DEV: Start All",
+    "command": "npm run all:dev",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "DEV: Build All",
+    "command": "npm run all:build",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT/app",
+  },
+  {
+    "label": "DOCKER: Up SERVICES Containers",
+    "command": "docker compose -f docker-compose.services.yml up --build -d",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT",
+  },
+  {
+    "label": "DOCKER: Up DEV Containers",
+    "command": "docker compose -f docker-compose.dev.yml up --build -d",
+    "use_new_terminal": true,
+    "cwd": "$ZED_WORKTREE_ROOT",
+  },
+]

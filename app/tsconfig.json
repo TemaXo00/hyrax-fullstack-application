@@ -1,0 +1,32 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./services/server"
+    },
+    {
+      "path": "./services/client"
+    },
+    {
+      "path": "./core-libs/types"
+    },
+    {
+      "path": "./core-libs/validation-config"
+    },
+    {
+      "path": "./server-libs/database"
+    },
+    {
+      "path": "./server-libs/dto"
+    },
+    {
+      "path": "./client-libs/home-page"
+    },
+    {
+      "path": "./client-libs/about-page"
+    }
+  ],
+  "compilerOptions": {}
+}
