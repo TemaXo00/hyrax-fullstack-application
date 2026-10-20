@@ -26,6 +26,9 @@
     },
     {
       "path": "./client-libs/about-page"
+    },
+    {
+      "path": "./server-libs/nest-launcher"
     }
   ],
   "compilerOptions": {}
