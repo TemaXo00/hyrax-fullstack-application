@@ -1,5 +1,5 @@
 export const SWAGGER_PATH = 'api/docs'
-export const APP_NAME = 'TAVERN API'
+export const APP_NAME = 'HYRAX API'
 export const AUTHOR_GITHUB = 'https://github.com/TemaXo00'
 export const AUTHOR_MAIL = 'melnikov.artem294@gmail.com'
 export const AUTHOR_NAME = 'Melnikov Artem'
