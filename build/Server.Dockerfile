@@ -8,9 +8,12 @@ COPY app/nx.json ./
 COPY app/tsconfig*.json ./
 
 COPY app/services/server ./services/server
+COPY app/server-libs ./server-libs
+COPY app/core-libs ./core-libs
 
 RUN npm ci
 RUN npm run nx:sync
+RUN npm run db:generate
 RUN npx nx build server
 
 FROM node:26.12-alpine AS deps
@@ -27,6 +30,8 @@ FROM node:26.12-alpine AS worker
 WORKDIR /app
 
 COPY --from=builder /app/services/server/dist ./dist
+COPY --from=builder /app/server-libs ./node_modules/@org
+COPY --from=builder /app/core-libs ./node_modules/@org
 
 COPY --from=deps /app/node_modules ./node_modules
 
