@@ -10,5 +10,13 @@
     "target": "es2021"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["eslint.config.js", "eslint.config.cjs", "eslint.config.mjs"]
+  "exclude": ["eslint.config.js", "eslint.config.cjs", "eslint.config.mjs"],
+  "references": [
+    {
+      "path": "../../server-libs/nest-launcher/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/database/tsconfig.lib.json"
+    }
+  ]
 }
