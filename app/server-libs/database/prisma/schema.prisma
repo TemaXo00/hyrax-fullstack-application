@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,4 +5,338 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id String @id @default(uuid(7))
+
+  nickname     String @unique @db.VarChar(70)
+  passwordHash String @map("password_hash")
+
+  isBlocked Boolean @default(false) @map("is_blocked")
+
+  role Roles @default(PLAYER)
+
+  pet    Pet?
+  stats  PlayerStatistic?
+  streak LoginStreak?
+
+  foodInventories     FoodInventory[]
+  cosmeticInventories CosmeticInventory[]
+  userUpgrades        UserUpgrade[]
+  userAchievments     UserAchievment[]
+
+  adminLogs        AdminLog[] @relation("AdminLogs")
+  adminLogsTargets AdminLog[] @relation("AdminLogsTargets")
+
+  lastLoginAt DateTime @default(now()) @map("last_login_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([lastLoginAt])
+  @@index([isBlocked])
+  @@map("users")
+}
+
+model Pet {
+  id String @id @default(uuid(7))
+
+  name String @db.VarChar(70)
+
+  level  Int @default(1)
+  xp     Int @default(0)
+  hunger Int @default(100) @db.SmallInt
+  mood   Int @default(100) @db.SmallInt
+
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  @@index([xp])
+  @@index([level])
+  @@map("pets")
+}
+
+model PlayerStatistic {
+  id String @id @default(uuid(7))
+
+  coins BigInt @default(0)
+
+  totalCoinsEarned BigInt @default(0) @map("total_coins_earned")
+  totalClicks      BigInt @default(0) @map("total_clicks")
+  totalFeeds       BigInt @default(0) @map("total_feeds")
+  streak           Int    @default(0)
+  clickPower       Int    @default(1) @map("click_power")
+  autoIncome       Int    @default(0) @map("auto_income")
+
+  playerId String @unique @map("player_id")
+  player   User   @relation(fields: [playerId], references: [id])
+
+  lastSyncAt DateTime @default(now()) @map("last_sync_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([totalCoinsEarned])
+  @@index([totalClicks])
+  @@map("players_statistics")
+}
+
+model Food {
+  id String @id @default(uuid(7))
+
+  name        String  @db.VarChar(70)
+  description String? @db.Text
+
+  price    Int
+  imageUrl String? @map("image_url")
+  isActive Boolean @default(false) @map("is_active")
+
+  hungerRestore Int @map("hunger_restore")
+  moodBonus     Int @map("mood_bonus")
+
+  inventories FoodInventory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([moodBonus])
+  @@index([hungerRestore])
+  @@index([isActive])
+  @@index([price])
+  @@map("food")
+}
+
+model FoodInventory {
+  id String @id @default(uuid(7))
+
+  quantity Int @default(0)
+
+  foodId String @map("food_id")
+  food   Food   @relation(fields: [foodId], references: [id])
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([foodId, userId])
+  @@index([quantity])
+  @@index([userId])
+  @@map("food_in_inventory")
+}
+
+model Cosmetic {
+  id String @id @default(uuid(7))
+
+  name        String  @db.VarChar(70)
+  description String? @db.Text
+
+  price    Int
+  imageUrl String? @map("image_url")
+  isActive Boolean @default(false) @map("is_active")
+
+  slot   CosmeticSlots
+  rarity CosmeticRarity
+
+  inventories  CosmeticInventory[]
+  dailyRewards DailyRewardConfig[] @relation("DailyRewardItem")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([price])
+  @@index([isActive])
+  @@index([slot])
+  @@index([rarity])
+  @@map("cosmetics")
+}
+
+model CosmeticInventory {
+  id String @id @default(uuid(7))
+
+  isEquipped Boolean @default(false) @map("is_equipped")
+
+  cosmeticId String   @map("cosmetic_id")
+  cosmetic   Cosmetic @relation(fields: [cosmeticId], references: [id])
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([cosmeticId, userId])
+  @@index([userId])
+  @@map("cosmetic_in_inventory")
+}
+
+model Upgrade {
+  id String @id @default(uuid(7))
+
+  name        String  @db.VarChar(70)
+  description String?
+  imageUrl    String? @map("image_url")
+
+  effectType  EffectTypes @map("effect_type")
+  effectValue Int         @map("effect_value")
+
+  basePrice       Int     @map("base_price")
+  priceMultiplier Decimal @default(1.0) @map("price_multiplier") @db.Decimal(10, 4)
+
+  maxLevel Int @default(10) @map("max_level")
+
+  userUpgrades UserUpgrade[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([name])
+  @@index([effectType])
+  @@index([basePrice])
+  @@map("upgrades")
+}
+
+model UserUpgrade {
+  id String @id @default(uuid(7))
+
+  level Int @default(1)
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  upgradeId String  @map("upgrade_id")
+  upgrade   Upgrade @relation(fields: [upgradeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, upgradeId])
+  @@index([upgradeId])
+  @@map("user_upgrades")
+}
+
+model Achievment {
+  id String @id @default(uuid(7))
+
+  code String @unique @db.VarChar(70)
+
+  title       String  @db.VarChar(70)
+  description String?
+  imageUrl    String? @map("image_url")
+
+  conditionType  AchievmentConditions @map("condition_type")
+  conditionValue Int                  @map("condition_value")
+
+  rewardCoins Int @default(0) @map("reward_coins")
+
+  userAchievments UserAchievment[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([title])
+  @@index([conditionType, conditionValue])
+  @@map("achievments")
+}
+
+model UserAchievment {
+  id String @id @default(uuid(7))
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  achievmentId String     @map("achievment_id")
+  achievment   Achievment @relation(fields: [achievmentId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, achievmentId])
+  @@index([userId])
+  @@index([achievmentId])
+  @@map("user_achievments")
+}
+
+model DailyRewardConfig {
+  id String @id @default(uuid(7))
+
+  dayNumber    Int     @unique @map("day_number")
+  rewardCoins  Int     @map("reward_coins")
+  rewardItemId String? @map("reward_item_id")
+
+  rewardItem Cosmetic? @relation("DailyRewardItem", fields: [rewardItemId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("daily_reward_config")
+}
+
+model LoginStreak {
+  id String @id @default(uuid(7))
+
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  currentStreak Int      @default(0) @map("current_streak")
+  bestStreak    Int      @default(0) @map("best_streak")
+  lastClaimDate DateTime @map("last_claim_date") @db.Date
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("login_streaks")
+}
+
+model AdminLog {
+  id String @id @default(uuid(7))
+
+  adminId String @map("admin_id")
+  admin   User   @relation("AdminLogs", fields: [adminId], references: [id])
+
+  action String @db.VarChar(70)
+
+  targetUserId String? @map("target_user_id")
+  targetUser   User?   @relation("AdminLogsTargets", fields: [targetUserId], references: [id])
+
+  details Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([adminId])
+  @@index([targetUserId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("admin_logs")
+}
+
+enum Roles {
+  PLAYER
+  ADMIN
+}
+
+enum CosmeticSlots {
+  HAT
+  BACKGROUND
+  ACCESSORY
+}
+
+enum CosmeticRarity {
+  COMMON
+  RARE
+  EPIC
+}
+
+enum EffectTypes {
+  CLICK_POWER
+  AUTO_INCOME
+}
+
+enum AchievmentConditions {
+  TOTAL_CLICKS
+  TOTAL_FEEDS
+  LEVEL
+  TOTAL_COINS_EARNED
+  STREAK
 }
