@@ -41,5 +41,16 @@ services:
      db-test:
       condition: service_healthy
 
+  migrator:
+    build:
+      dockerfile: ./build/Database.Dockerfile
+      context: .
+    container_name: hyrax-database-migrator
+    environment:
+      HYRAX_DB_URL: ${HYRAX_DB_URL}
+    depends_on:
+     db-test:
+      condition: service_healthy
+
 volumes:
   db_test_data:
