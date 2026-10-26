@@ -16,5 +16,16 @@ services:
     volumes:
       - db_data:/var/lib/postrgesql
 
+  migrator:
+    build:
+      dockerfile: ./build/Database.Dockerfile
+      context: .
+    container_name: hyrax-database-migrator
+    environment:
+      HYRAX_DB_URL: ${HYRAX_DB_URL}
+    depends_on:
+     db:
+      condition: service_healthy
+
 volumes:
   db_data:
