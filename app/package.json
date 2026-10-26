@@ -15,6 +15,8 @@
     "all:prettier-fix": "pretier --check . --write",
     "db:generate": "prisma generate --config server-libs/database/prisma7.config.ts",
     "db:studio": "prisma studio --config server-libs/database/prisma7.config.ts",
+    "db:validate": "prisma validate --config server-libs/database/prisma7.config.ts",
+    "db:format": "prisma format --config server-libs/database/prisma7.config.ts",
     "db:migrate-dev": "prisma migrate dev --config server-libs/database/prisma7.config.ts",
     "db:migrate-deploy": "prisma migrate deploy --config server-libs/database/prisma7.config.ts",
     "db:migrate-reset": "prisma migrate reset --config server-libs/database/prisma7.config.ts"
