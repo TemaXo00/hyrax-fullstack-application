@@ -1,4 +1,4 @@
-import { ValidationPipeOptions } from '@nestjs/common'
+import { ValidationPipeOptions } from '@nestjs/common';
 
 export const VALIDATION_CONFIG: ValidationPipeOptions = {
   transform: true,
@@ -7,4 +7,4 @@ export const VALIDATION_CONFIG: ValidationPipeOptions = {
   transformOptions: {
     enableImplicitConversion: true,
   },
-} as const
+} as const;

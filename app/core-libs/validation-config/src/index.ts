@@ -1,1 +1,2 @@
-export * from './lib/validation-config.js';
+export * from './lib/auth.config.js';
+export * from './lib/shared.config.js';

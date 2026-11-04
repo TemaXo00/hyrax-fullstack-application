@@ -13,13 +13,16 @@ model User {
   nickname     String @unique @db.VarChar(70)
   passwordHash String @map("password_hash")
 
-  isBlocked Boolean @default(false) @map("is_blocked")
+  isBlocked    Boolean   @default(false) @map("is_blocked")
+  blockedUntil DateTime? @map("blocked_until")
+  blockReason  String?   @map("block_reason")
 
   role Roles @default(PLAYER)
 
-  pet    Pet?
-  stats  PlayerStatistic?
-  streak LoginStreak?
+  pet      Pet?
+  stats    PlayerStatistic?
+  streak   LoginStreak?
+  sessions Session[]
 
   foodInventories     FoodInventory[]
   cosmeticInventories CosmeticInventory[]
@@ -35,6 +38,25 @@ model User {
   @@index([lastLoginAt])
   @@index([isBlocked])
   @@map("users")
+}
+
+model Session {
+  id String @id @default(uuid(7))
+
+  refreshTokenHash String @map("refresh_token_hash") @db.Text
+
+  localName String? @map("local_name") @db.VarChar(90)
+  ip        String  @db.VarChar(90)
+  userAgent String  @map("user_agent") @db.Text
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("sessions")
 }
 
 model Pet {

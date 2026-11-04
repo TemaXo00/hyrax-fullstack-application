@@ -17,6 +17,21 @@
     },
     {
       "path": "../../server-libs/database/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/auth-feature/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/auth-session-feature/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/auth-core/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/auth-admin-feature/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/redis/tsconfig.lib.json"
     }
   ]
 }

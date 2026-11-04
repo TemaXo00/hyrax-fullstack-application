@@ -16,7 +16,25 @@
       "path": "./core-libs/validation-config"
     },
     {
+      "path": "./core-libs/validation-messages"
+    },
+    {
       "path": "./server-libs/database"
+    },
+    {
+      "path": "./server-libs/auth-core"
+    },
+    {
+      "path": "./server-libs/auth-feature"
+    },
+    {
+      "path": "./server-libs/auth-session-feature"
+    },
+    {
+      "path": "./server-libs/auth-admin-feature"
+    },
+    {
+      "path": "./server-libs/http-decorators"
     },
     {
       "path": "./server-libs/dto"
@@ -29,6 +47,9 @@
     },
     {
       "path": "./server-libs/nest-launcher"
+    },
+    {
+      "path": "./server-libs/redis"
     }
   ],
   "compilerOptions": {}

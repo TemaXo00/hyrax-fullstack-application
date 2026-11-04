@@ -36,8 +36,8 @@
 │   └── tsconfig.json                 # Настройка TypeScript
 ├── build                             # Docker-файлы для сборки приложений
 ├── CONTRIBUTING.md                   # Информация о участии в проекте
-├── docker-compose.dev.yml            # Dev-среда для контейнеров
-├── docker-compose.infra.yml          # Контейнеры для запуска общей инфраструктуры (пример: базы данных)
+├── docker-compose.infra.yml          # Инфраструктура: PostgreSQL + применение миграций
+├── docker-compose.test.yml           # Полный тестовый стек: БД, API, клиент
 └── README.md                         # Документация проекта
 ```
 
@@ -54,8 +54,8 @@ cd hyrax-fullstack-application
 cp .env.example .env
 # Опционально: редактируем переменные окружения
 nano .env
-# Запускаем dev-контейнеры
-docker compose -f docker-compose.dev.yml up --build -d
+# Запускаем полный тестовый стек (PostgreSQL + API + клиент)
+docker compose -f docker-compose.test.yml up --build -d
 ```
 
 ### Ручная установка и использование
@@ -67,7 +67,7 @@ git clone https://github.com/TemaXo00/hyrax-fullstack-application.git
 cd hyrax-fullstack-application
 # Копируем .env.example и называем .env в корневой директории проекта и директории app
 cp .env.example .env
-cp app/.env.example .env
+cp app/.env.example app/.env
 # Запускаем Docker-контейнеры для инфраструктуры
 docker compose -f docker-compose.infra.yml up --build -d
 # Переходим в директорию app, устаанвливаем зависимости, запускаем приложение
@@ -78,6 +78,7 @@ npm run all:dev
 
 ## Участники проекта
 
-- [Kiqiou](https://github.com/kiqiou) - Куксар Екатерина, группа 2421, Team-lead, маркетолог, тестировщик
+- [Kiqiou](https://github.com/kiqiou) - Куксар Екатерина, группа 2421, Team-lead, маркетолог
 - [TemaXo00](https://github.com/TemaXo00) - Мельников Артём, группа 2421. Backend-разработчик
 - [Czapke](https://github.com/czapkee) - Ставская Алина, группа 2421. Frontend-разработчик и дизайнер
+- [Felixirrr](https://github.com/felixirrr) - Рогатко Валерия, группа 2421, тестировщик

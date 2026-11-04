@@ -1,0 +1,29 @@
+{
+  "name": "@org/auth-admin-feature",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@org/auth-core": "0.0.1",
+    "@org/database": "0.0.1",
+    "@org/dto": "0.0.1",
+    "@org/http-decorators": "0.0.1",
+    "@org/redis": "0.0.1",
+    "@org/types": "0.0.1",
+    "@org/validation-config": "0.0.1",
+    "@org/validation-messages": "0.0.1",
+    "tslib": "^2.3.0"
+  }
+}

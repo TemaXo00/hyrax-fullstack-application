@@ -1,4 +1,4 @@
-import { ConsoleLoggerOptions } from '@nestjs/common'
+import { ConsoleLoggerOptions } from '@nestjs/common';
 
 export const CONSOLE_LOGGER_CONFIG = (name: string): ConsoleLoggerOptions => {
   return {
@@ -6,5 +6,5 @@ export const CONSOLE_LOGGER_CONFIG = (name: string): ConsoleLoggerOptions => {
     colors: true,
     compact: true,
     timestamp: false,
-  }
-}
+  };
+};
