@@ -1,6 +1,6 @@
-import { monolith } from '@org/nest-launcher'
+import { monolith } from '@org/nest-launcher';
 
-import { AppModule } from './app.module'
+import { AppModule } from './app.module';
 
 void monolith<AppModule>({
   name: 'Server',

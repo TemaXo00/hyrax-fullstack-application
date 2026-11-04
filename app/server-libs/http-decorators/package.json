@@ -1,0 +1,28 @@
+{
+  "name": "@org/http-decorators",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/swagger": "^11.4.7",
+    "@org/auth-core": "0.0.1",
+    "@org/types": "0.0.1",
+    "express": "^5.2.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.25"
+  }
+}

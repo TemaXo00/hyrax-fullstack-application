@@ -10,11 +10,18 @@
     "target": "es2021",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true
+    "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../../core-libs/types/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core-libs/validation-config/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core-libs/validation-messages/tsconfig.lib.json"
+    }
+  ]
 }

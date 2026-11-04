@@ -1,4 +1,4 @@
-import { HelmetOptions } from 'helmet'
+import { HelmetOptions } from 'helmet';
 
 export const HELMET_CONFIG: HelmetOptions = {
   crossOriginEmbedderPolicy: false,
@@ -10,4 +10,4 @@ export const HELMET_CONFIG: HelmetOptions = {
       scriptSrc: ["'self'", "https: 'unsafe-inline'"],
     },
   },
-}
+};

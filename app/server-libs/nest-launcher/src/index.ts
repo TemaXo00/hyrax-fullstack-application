@@ -1,1 +1,1 @@
-export * from './lib/monolith.js'
+export * from './lib/monolith.js';
