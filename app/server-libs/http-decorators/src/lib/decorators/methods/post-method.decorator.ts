@@ -9,6 +9,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
+import { buildRequestBody, buildSuccessResponse } from '../swagger.util';
 import { Validate } from '../validate.decorator';
 
 import type {
@@ -22,13 +23,14 @@ export const POSTMethod = (options: IMethodOptions): MethodDecorator => {
       summary: options.summary,
       description: options.operationDesc,
     }),
-    ApiCreatedResponse({ description: 'Ресурс успешно создан' }),
+    ApiCreatedResponse(buildSuccessResponse(options, 'Ресурс успешно создан')),
     ApiBadRequestResponse({
       description: 'Запрос содержит некорректные данные',
     }),
     ApiInternalServerErrorResponse({
       description: 'Внутренняя ошибка сервера',
     }),
+    ...buildRequestBody(options),
     Post(options.path),
   );
 };
@@ -42,7 +44,7 @@ export const POSTProtectedMethod = (
       description: options.operationDesc,
     }),
     ApiBearerAuth(),
-    ApiCreatedResponse({ description: 'Ресурс успешно создан' }),
+    ApiCreatedResponse(buildSuccessResponse(options, 'Ресурс успешно создан')),
     ApiBadRequestResponse({
       description: 'Запрос содержит некорректные данные',
     }),
@@ -53,6 +55,7 @@ export const POSTProtectedMethod = (
     ApiInternalServerErrorResponse({
       description: 'Внутренняя ошибка сервера',
     }),
+    ...buildRequestBody(options),
     Post(options.path),
     Validate(...(options.roles ?? [])),
   );
