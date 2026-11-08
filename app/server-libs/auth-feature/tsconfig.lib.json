@@ -37,6 +37,9 @@
     },
     {
       "path": "../redis/tsconfig.lib.json"
+    },
+    {
+      "path": "../pet-feature/tsconfig.lib.json"
     }
   ]
 }

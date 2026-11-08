@@ -13,6 +13,14 @@ import {
   AuthTokenService,
 } from '@org/auth-core';
 import { DatabaseService } from '@org/database';
+import {
+  mapCosmeticInventory,
+  mapFoodInventory,
+  mapPet,
+  mapPlayerStatistic,
+  mapUserAchievement,
+  mapUserUpgrade,
+} from '@org/pet-feature';
 import { CACHE_KEYS, RedisService } from '@org/redis';
 import { getUserRoleLabel } from '@org/types';
 import { AUTH_CONFIG } from '@org/validation-config';
@@ -24,10 +32,8 @@ import type {
   AuthServiceContract,
   ChangePasswordInput,
   ClientMeta,
-  FoodEntity,
   LoginInput,
   MeEntity,
-  PetEntity,
   RegisterInput,
   UserEntity,
 } from '@org/types';
@@ -294,22 +300,8 @@ export class AuthFeatureService implements AuthServiceContract {
   private mapMe(user: MeUserView): MeEntity {
     return {
       ...this.mapUser(user),
-      pet: user.pet ? this.mapPet(user.pet) : null,
-      stats: user.stats
-        ? {
-            id: user.stats.id,
-            coins: user.stats.coins.toString(),
-            totalCoinsEarned: user.stats.totalCoinsEarned.toString(),
-            totalClicks: user.stats.totalClicks.toString(),
-            totalFeeds: user.stats.totalFeeds.toString(),
-            streak: user.stats.streak,
-            clickPower: user.stats.clickPower,
-            autoIncome: user.stats.autoIncome,
-            lastSyncAt: user.stats.lastSyncAt,
-            createdAt: user.stats.createdAt,
-            updatedAt: user.stats.updatedAt,
-          }
-        : null,
+      pet: user.pet ? mapPet(user.pet) : null,
+      stats: user.stats ? mapPlayerStatistic(user.stats) : null,
       streak: user.streak
         ? {
             id: user.streak.id,
@@ -320,96 +312,10 @@ export class AuthFeatureService implements AuthServiceContract {
             updatedAt: user.streak.updatedAt,
           }
         : null,
-      foodInventory: user.foodInventories.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-        food: this.mapFood(item.food),
-        createdAt: item.createdAt,
-        updatedAt: item.updatedAt,
-      })),
-      cosmeticInventory: user.cosmeticInventories.map((item) => ({
-        id: item.id,
-        isEquipped: item.isEquipped,
-        cosmetic: {
-          id: item.cosmetic.id,
-          name: item.cosmetic.name,
-          description: item.cosmetic.description,
-          price: item.cosmetic.price,
-          imageUrl: item.cosmetic.imageUrl,
-          isActive: item.cosmetic.isActive,
-          slot: item.cosmetic.slot,
-          rarity: item.cosmetic.rarity,
-          createdAt: item.cosmetic.createdAt,
-          updatedAt: item.cosmetic.updatedAt,
-        },
-        createdAt: item.createdAt,
-        updatedAt: item.updatedAt,
-      })),
-      upgrades: user.userUpgrades.map((item) => ({
-        id: item.id,
-        level: item.level,
-        upgrade: {
-          id: item.upgrade.id,
-          name: item.upgrade.name,
-          description: item.upgrade.description,
-          imageUrl: item.upgrade.imageUrl,
-          effectType: item.upgrade.effectType,
-          effectValue: item.upgrade.effectValue,
-          basePrice: item.upgrade.basePrice,
-          priceMultiplier: String(item.upgrade.priceMultiplier),
-          maxLevel: item.upgrade.maxLevel,
-          createdAt: item.upgrade.createdAt,
-          updatedAt: item.upgrade.updatedAt,
-        },
-        createdAt: item.createdAt,
-        updatedAt: item.updatedAt,
-      })),
-      achievements: user.userAchievments.map((item) => ({
-        id: item.id,
-        achievement: {
-          id: item.achievment.id,
-          code: item.achievment.code,
-          title: item.achievment.title,
-          description: item.achievment.description,
-          imageUrl: item.achievment.imageUrl,
-          conditionType: item.achievment.conditionType,
-          conditionValue: item.achievment.conditionValue,
-          rewardCoins: item.achievment.rewardCoins,
-          createdAt: item.achievment.createdAt,
-          updatedAt: item.achievment.updatedAt,
-        },
-        createdAt: item.createdAt,
-      })),
-    };
-  }
-
-  private mapPet(pet: NonNullable<MeUserView['pet']>): PetEntity {
-    return {
-      id: pet.id,
-      name: pet.name,
-      level: pet.level,
-      xp: pet.xp,
-      hunger: pet.hunger,
-      mood: pet.mood,
-      createdAt: pet.createdAt,
-      updatedAt: pet.updatedAt,
-    };
-  }
-
-  private mapFood(
-    food: MeUserView['foodInventories'][number]['food'],
-  ): FoodEntity {
-    return {
-      id: food.id,
-      name: food.name,
-      description: food.description,
-      price: food.price,
-      imageUrl: food.imageUrl,
-      isActive: food.isActive,
-      hungerRestore: food.hungerRestore,
-      moodBonus: food.moodBonus,
-      createdAt: food.createdAt,
-      updatedAt: food.updatedAt,
+      foodInventory: user.foodInventories.map(mapFoodInventory),
+      cosmeticInventory: user.cosmeticInventories.map(mapCosmeticInventory),
+      upgrades: user.userUpgrades.map(mapUserUpgrade),
+      achievements: user.userAchievments.map(mapUserAchievement),
     };
   }
 
