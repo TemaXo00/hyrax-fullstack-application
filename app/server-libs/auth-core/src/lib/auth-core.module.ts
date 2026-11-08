@@ -6,20 +6,26 @@ import { DatabaseModule } from '@org/database';
 
 import { AuthJwtGuard } from './guards/jwt.guard';
 import { RolesGuard } from './guards/roles.guard';
+import { AuthWsGuard } from './guards/ws-auth.guard';
 import { AuthCookieService } from './services/cookie.service';
 import { AuthPasswordService } from './services/password.service';
+import { AuthSessionValidatorService } from './services/session-validator.service';
 import { AuthSessionService } from './services/session.service';
 import { AuthTokenService } from './services/token.service';
+import { AuthWsService } from './services/ws-auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 const AUTH_PROVIDERS = [
   JwtStrategy,
   AuthJwtGuard,
+  AuthWsGuard,
   RolesGuard,
   AuthCookieService,
   AuthPasswordService,
   AuthSessionService,
+  AuthSessionValidatorService,
   AuthTokenService,
+  AuthWsService,
 ];
 
 @Global()
