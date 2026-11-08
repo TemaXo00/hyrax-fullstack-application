@@ -8,3 +8,16 @@ export * from './lib/auth/user-pagination.dto';
 export * from './lib/auth/block-user.dto';
 
 export * from './lib/shared/pagination.dto';
+export * from './lib/shared/pagination-response.dto';
+
+export * from './lib/pet/rename-pet.dto';
+export * from './lib/pet/feed-pet.dto';
+export * from './lib/pet/pet-response.dto';
+
+export * from './lib/food/buy-food.dto';
+export * from './lib/food/food-response.dto';
+
+export * from './lib/cosmetic/equip-cosmetic.dto';
+export * from './lib/cosmetic/cosmetic-response.dto';
+
+export * from './lib/upgrade/upgrade-response.dto';
