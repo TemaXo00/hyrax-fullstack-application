@@ -1,5 +1,3 @@
-import type { UserEntity, UserRole } from '../auth/auth.types.js';
-
 export interface PaginationInput {
   page?: number;
   limit?: number;
@@ -19,14 +17,4 @@ export interface PaginationMeta {
 export interface PaginatedResult<T> {
   pagination: PaginationMeta;
   items: T[];
-}
-
-export interface UserPaginationInput extends PaginationInput {
-  role?: UserRole;
-  isBlocked?: boolean;
-}
-
-export interface PaginatedUsersOutput {
-  pagination: PaginationMeta;
-  users: UserEntity[];
 }

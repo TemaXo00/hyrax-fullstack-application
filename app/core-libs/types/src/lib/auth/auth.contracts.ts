@@ -9,11 +9,11 @@ import type {
   SessionEntity,
   UserEntity,
 } from './auth.types.js';
-import type { ClientMeta } from '../shared/client-meta.types.js';
 import type {
   PaginatedUsersOutput,
   UserPaginationInput,
-} from '../shared/pagination.types.js';
+} from './user-pagination.types.js';
+import type { ClientMeta } from '../shared/client-meta.types.js';
 
 export interface AuthServiceContract {
   register(input: RegisterInput, meta: ClientMeta): Promise<AuthSessionResult>;
