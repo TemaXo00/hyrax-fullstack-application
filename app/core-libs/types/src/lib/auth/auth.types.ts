@@ -1,3 +1,11 @@
+import type { UserAchievementEntity } from '../achievement/achievement.types.js';
+import type { CosmeticInventoryEntity } from '../cosmetic/cosmetic.types.js';
+import type { FoodInventoryEntity } from '../food/food.types.js';
+import type { PetEntity } from '../pet/pet.types.js';
+import type { LoginStreakEntity } from '../player/login-streak.types.js';
+import type { PlayerStatisticEntity } from '../player/player-statistic.types.js';
+import type { UserUpgradeEntity } from '../upgrade/upgrade.types.js';
+
 export const USER_ROLES = ['PLAYER', 'ADMIN'] as const;
 
 export type UserRole = (typeof USER_ROLES)[number];
@@ -63,132 +71,6 @@ export interface SessionEntity {
   isCurrent: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export type CosmeticSlot = 'HAT' | 'BACKGROUND' | 'ACCESSORY';
-
-export type CosmeticRarity = 'COMMON' | 'RARE' | 'EPIC';
-
-export type UpgradeEffectType = 'CLICK_POWER' | 'AUTO_INCOME';
-
-export type AchievementCondition =
-  'TOTAL_CLICKS' | 'TOTAL_FEEDS' | 'LEVEL' | 'TOTAL_COINS_EARNED' | 'STREAK';
-
-export interface PetEntity {
-  id: string;
-  name: string;
-  level: number;
-  xp: number;
-  hunger: number;
-  mood: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface PlayerStatisticEntity {
-  id: string;
-  coins: string;
-  totalCoinsEarned: string;
-  totalClicks: string;
-  totalFeeds: string;
-  streak: number;
-  clickPower: number;
-  autoIncome: number;
-  lastSyncAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface LoginStreakEntity {
-  id: string;
-  currentStreak: number;
-  bestStreak: number;
-  lastClaimDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface FoodEntity {
-  id: string;
-  name: string;
-  description: string | null;
-  price: number;
-  imageUrl: string | null;
-  isActive: boolean;
-  hungerRestore: number;
-  moodBonus: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface FoodInventoryEntity {
-  id: string;
-  quantity: number;
-  food: FoodEntity;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface CosmeticEntity {
-  id: string;
-  name: string;
-  description: string | null;
-  price: number;
-  imageUrl: string | null;
-  isActive: boolean;
-  slot: CosmeticSlot;
-  rarity: CosmeticRarity;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface CosmeticInventoryEntity {
-  id: string;
-  isEquipped: boolean;
-  cosmetic: CosmeticEntity;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface UpgradeEntity {
-  id: string;
-  name: string;
-  description: string | null;
-  imageUrl: string | null;
-  effectType: UpgradeEffectType;
-  effectValue: number;
-  basePrice: number;
-  priceMultiplier: string;
-  maxLevel: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface UserUpgradeEntity {
-  id: string;
-  level: number;
-  upgrade: UpgradeEntity;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface AchievementEntity {
-  id: string;
-  code: string;
-  title: string;
-  description: string | null;
-  imageUrl: string | null;
-  conditionType: AchievementCondition;
-  conditionValue: number;
-  rewardCoins: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface UserAchievementEntity {
-  id: string;
-  achievement: AchievementEntity;
-  createdAt: Date;
 }
 
 export interface MeEntity extends UserEntity {
