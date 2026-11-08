@@ -49,10 +49,8 @@ generation/
 # Tests
 __tests__/
 *.test.ts
-*.spec.ts
 test/
 tests/
-jest.config.*
 vitest.config.*
 
 # Temp
