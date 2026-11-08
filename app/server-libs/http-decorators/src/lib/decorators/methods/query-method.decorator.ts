@@ -9,6 +9,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
+import { buildRequestBody, buildSuccessResponse } from '../swagger.util';
 import { Validate } from '../validate.decorator';
 
 import type {
@@ -22,13 +23,14 @@ export const QUERYMethod = (options: IMethodOptions): MethodDecorator => {
       summary: options.summary,
       description: options.operationDesc,
     }),
-    ApiOkResponse({ description: 'Запрос успешно обработан' }),
+    ApiOkResponse(buildSuccessResponse(options, 'Запрос успешно обработан')),
     ApiBadRequestResponse({
       description: 'Запрос содержит некорректные данные',
     }),
     ApiInternalServerErrorResponse({
       description: 'Внутренняя ошибка сервера',
     }),
+    ...buildRequestBody(options),
     QueryMethod(options.path),
   );
 };
@@ -42,7 +44,7 @@ export const QUERYProtectedMethod = (
       description: options.operationDesc,
     }),
     ApiBearerAuth(),
-    ApiOkResponse({ description: 'Запрос успешно обработан' }),
+    ApiOkResponse(buildSuccessResponse(options, 'Запрос успешно обработан')),
     ApiBadRequestResponse({
       description: 'Запрос содержит некорректные данные',
     }),
@@ -53,6 +55,7 @@ export const QUERYProtectedMethod = (
     ApiInternalServerErrorResponse({
       description: 'Внутренняя ошибка сервера',
     }),
+    ...buildRequestBody(options),
     QueryMethod(options.path),
     Validate(...(options.roles ?? [])),
   );

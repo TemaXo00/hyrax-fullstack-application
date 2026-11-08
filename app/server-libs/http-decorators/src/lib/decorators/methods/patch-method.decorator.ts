@@ -9,6 +9,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
+import { buildRequestBody, buildSuccessResponse } from '../swagger.util';
 import { Validate } from '../validate.decorator';
 
 import type {
@@ -22,13 +23,14 @@ export const PATCHMethod = (options: IMethodOptions): MethodDecorator => {
       summary: options.summary,
       description: options.operationDesc,
     }),
-    ApiOkResponse({ description: 'Ресурс успешно обновлён' }),
+    ApiOkResponse(buildSuccessResponse(options, 'Ресурс успешно обновлён')),
     ApiBadRequestResponse({
       description: 'Запрос содержит некорректные данные',
     }),
     ApiInternalServerErrorResponse({
       description: 'Внутренняя ошибка сервера',
     }),
+    ...buildRequestBody(options),
     Patch(options.path),
   );
 };
@@ -42,7 +44,7 @@ export const PATCHProtectedMethod = (
       description: options.operationDesc,
     }),
     ApiBearerAuth(),
-    ApiOkResponse({ description: 'Ресурс успешно обновлён' }),
+    ApiOkResponse(buildSuccessResponse(options, 'Ресурс успешно обновлён')),
     ApiBadRequestResponse({
       description: 'Запрос содержит некорректные данные',
     }),
@@ -53,6 +55,7 @@ export const PATCHProtectedMethod = (
     ApiInternalServerErrorResponse({
       description: 'Внутренняя ошибка сервера',
     }),
+    ...buildRequestBody(options),
     Patch(options.path),
     Validate(...(options.roles ?? [])),
   );
