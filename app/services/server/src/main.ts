@@ -12,7 +12,6 @@ void monolith<AppModule>({
   responseMap: true,
   errorMap: true,
   compression: true,
-  rateLimit: true,
   swagger: true,
   cookie: true,
   cors: true,

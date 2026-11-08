@@ -103,13 +103,8 @@ export function logMonolithMessages<T>(
   logger.log(
     `Cookie parser status: ${options.cookie ? 'enabled' : 'disabled'}`,
   );
-  logger.log(
-    `Rate limit status: ${options.rateLimit ? 'enabled' : 'disabled'}`,
-  );
-  if (options.rateLimit) {
-    logger.log(`  Window: ${WINDOW_MS} minutes`);
-    logger.log(`  Limit: ${REQUEST_LIMIT}`);
-  }
+  logger.log(`Rate limit window: ${WINDOW_MS} minutes`);
+  logger.log(`Rate limit requests: ${REQUEST_LIMIT}`);
   logger.log('');
 
   logProjectEnvVariables(options.envVariables, logger);
