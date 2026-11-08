@@ -25,7 +25,9 @@
     "@org/validation-config": "0.0.1",
     "@org/validation-messages": "0.0.1",
     "express": "^5.2.1",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@org/pet-feature": "0.0.1",
+    "@nestjs/throttler": "^6.7.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.25"
