@@ -69,6 +69,10 @@ model Pet {
   hunger Int @default(100) @db.SmallInt
   mood   Int @default(100) @db.SmallInt
 
+  lastMoodAt   DateTime  @default(now()) @map("last_mood_at")
+  lastHungerAt DateTime  @default(now()) @map("last_hunger_at")
+  lastWalkAt   DateTime? @map("last_walk_at")
+
   userId String @unique @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
 
