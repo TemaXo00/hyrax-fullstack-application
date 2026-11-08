@@ -1,0 +1,46 @@
+export const GAME_CONFIG = {
+  PET: {
+    NAME_MIN_LENGTH: 1,
+    NAME_MAX_LENGTH: 70,
+    MOOD_MIN: 0,
+    MOOD_MAX: 100,
+    MOOD_DECAY_HOURS: 6,
+    HUNGER_MIN: 0,
+    HUNGER_MAX: 100,
+    HUNGER_DECAY_HOURS: 12,
+    MOOD_HAPPY_THRESHOLD: 70,
+    MOOD_SAD_THRESHOLD: 30,
+    XP_BASE: 100,
+    XP_STEP_PER_LEVEL: 50,
+    MAX_LEVEL: 100,
+  },
+  CLICK: {
+    XP: 2,
+    MOOD_MULTIPLIER_MIN: 0.5,
+  },
+  WALK: {
+    XP: 10,
+    REWARD_MULTIPLIER: 5,
+    MOOD_BONUS: 10,
+    HUNGER_COST: 5,
+    COOLDOWN_SECONDS: 60,
+  },
+  FEED: {
+    XP: 5,
+  },
+  FOOD: {
+    QUANTITY_MIN: 1,
+    QUANTITY_MAX: 100,
+  },
+  THROTTLE: {
+    DEFAULT_TTL_MS: 60_000,
+    DEFAULT_LIMIT: 120,
+    AUTH_LIMIT: 10,
+    AUTH_TTL_MS: 60_000,
+    CLICK_LIMIT: 25,
+    CLICK_TTL_MS: 10_000,
+    WALK_LIMIT: 5,
+    WALK_TTL_MS: 60_000,
+    WS_ACTION_COOLDOWN_MS: 100,
+  },
+} as const;
