@@ -6,7 +6,6 @@ export interface MonolithOptions<T> extends BaseOptions<T> {
   responseMap?: boolean;
   errorMap?: boolean;
   compression?: boolean;
-  rateLimit?: boolean;
   cookie?: boolean;
   cors?: boolean;
   swagger?: boolean;

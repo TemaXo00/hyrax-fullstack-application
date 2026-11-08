@@ -1,4 +1,5 @@
 import { Body, Req, Res } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { AuthCookieService } from '@org/auth-core';
 import { ChangePasswordDto, LoginDto, RegisterDto } from '@org/dto';
 import {
@@ -10,6 +11,7 @@ import {
   POSTMethod,
 } from '@org/http-decorators';
 import { AUTH_ROUTES } from '@org/types';
+import { GAME_CONFIG } from '@org/validation-config';
 
 import { AuthFeatureService } from './auth-feature.service';
 
@@ -28,6 +30,12 @@ export class AuthFeatureController {
     private readonly cookie: AuthCookieService,
   ) {}
 
+  @Throttle({
+    default: {
+      limit: GAME_CONFIG.THROTTLE.AUTH_LIMIT,
+      ttl: GAME_CONFIG.THROTTLE.AUTH_TTL_MS,
+    },
+  })
   @POSTMethod({
     path: AUTH_ROUTES.REGISTER,
     summary: 'Регистрация пользователя',
@@ -49,6 +57,12 @@ export class AuthFeatureController {
     };
   }
 
+  @Throttle({
+    default: {
+      limit: GAME_CONFIG.THROTTLE.AUTH_LIMIT,
+      ttl: GAME_CONFIG.THROTTLE.AUTH_TTL_MS,
+    },
+  })
   @POSTMethod({
     path: AUTH_ROUTES.LOGIN,
     summary: 'Авторизация пользователя',
@@ -70,6 +84,12 @@ export class AuthFeatureController {
     };
   }
 
+  @Throttle({
+    default: {
+      limit: GAME_CONFIG.THROTTLE.AUTH_LIMIT,
+      ttl: GAME_CONFIG.THROTTLE.AUTH_TTL_MS,
+    },
+  })
   @POSTMethod({
     path: AUTH_ROUTES.REFRESH,
     summary: 'Обновление пары токенов',

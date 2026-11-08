@@ -4,7 +4,6 @@ import { NestFactory } from '@nestjs/core';
 import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import rateLimit from 'express-rate-limit';
 
 import { AllExceptionsFilter } from './common/exception.filter.js';
 import { loggingMiddleware } from './common/logging.middleware.js';
@@ -12,7 +11,6 @@ import { ResponseInterceptor } from './common/response.interceptor.js';
 import { CONSOLE_LOGGER_CONFIG } from './config/console-logger.config.js';
 import { CORS_CONFIG } from './config/cors.config.js';
 import { SWAGGER_PATH } from './config/info.config.js';
-import { RATE_LIMIT_CONFIG } from './config/rate-limit.config.js';
 import { SWAGGER_CONFIG, SWAGGER_UI_CONFIG } from './config/swagger.config.js';
 import { VALIDATION_CONFIG } from './config/validation.config.js';
 import { setupMonolithEnvVariables } from './utils/env-variables.util.js';
@@ -71,10 +69,6 @@ export async function monolith<T>(options: MonolithOptions<T>): Promise<void> {
       SWAGGER_CONFIG,
     );
     SwaggerModule.setup(SWAGGER_PATH, app, swaggerDocument, SWAGGER_UI_CONFIG);
-  }
-
-  if (options.rateLimit) {
-    app.use(rateLimit(RATE_LIMIT_CONFIG(WINDOW_MS, REQUEST_LIMIT)));
   }
 
   if (options.compression) {
