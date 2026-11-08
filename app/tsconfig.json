@@ -50,6 +50,9 @@
     },
     {
       "path": "./server-libs/redis"
+    },
+    {
+      "path": "./server-libs/pet-feature"
     }
   ],
   "compilerOptions": {}
