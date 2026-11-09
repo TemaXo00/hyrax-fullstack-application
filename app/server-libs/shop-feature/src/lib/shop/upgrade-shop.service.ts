@@ -4,16 +4,18 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DatabaseService } from '@org/database';
+import { mapUpgrade, mapUserUpgrade } from '@org/pet-mappers';
+import {
+  buildPaginationMeta,
+  calculateUpgradePrice,
+  normalizePagination,
+} from '@org/pet-utils';
 import { CACHE_KEYS, RedisService } from '@org/redis';
 import {
   PET_MESSAGES,
   SHOP_MESSAGES,
   UPGRADE_MESSAGES,
 } from '@org/validation-messages';
-
-import { buildPaginationMeta, normalizePagination } from './shop.helpers';
-import { calculateUpgradePrice } from '../game/pet-game.rules';
-import { mapUpgrade, mapUserUpgrade } from '../mappers/game.mappers';
 
 import type { Prisma } from '@org/database';
 import type {

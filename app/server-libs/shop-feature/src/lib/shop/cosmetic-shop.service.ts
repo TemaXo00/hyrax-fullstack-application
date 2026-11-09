@@ -4,15 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DatabaseService } from '@org/database';
+import { mapCosmetic, mapCosmeticInventory } from '@org/pet-mappers';
+import { buildPaginationMeta, normalizePagination } from '@org/pet-utils';
 import { CACHE_KEYS, RedisService } from '@org/redis';
 import {
   COSMETIC_MESSAGES,
   PET_MESSAGES,
   SHOP_MESSAGES,
 } from '@org/validation-messages';
-
-import { buildPaginationMeta, normalizePagination } from './shop.helpers';
-import { mapCosmetic, mapCosmeticInventory } from '../mappers/game.mappers';
 
 import type { Prisma } from '@org/database';
 import type {

@@ -1,4 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
+import { calculateUpgradePrice } from '@org/pet-utils';
 import { CACHE_KEYS } from '@org/redis';
 import {
   PET_MESSAGES,
@@ -7,7 +8,6 @@ import {
 } from '@org/validation-messages';
 
 import { UpgradeShopService } from './upgrade-shop.service';
-import { calculateUpgradePrice } from '../game/pet-game.rules';
 
 import type { DatabaseService } from '@org/database';
 import type { RedisService } from '@org/redis';

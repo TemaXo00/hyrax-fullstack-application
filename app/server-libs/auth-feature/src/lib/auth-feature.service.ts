@@ -20,7 +20,7 @@ import {
   mapPlayerStatistic,
   mapUserAchievement,
   mapUserUpgrade,
-} from '@org/pet-feature';
+} from '@org/pet-mappers';
 import { CACHE_KEYS, RedisService } from '@org/redis';
 import { getUserRoleLabel } from '@org/types';
 import { AUTH_CONFIG } from '@org/validation-config';

@@ -15,11 +15,10 @@ import {
   WsException,
 } from '@nestjs/websockets';
 import { AuthWsGuard, AuthWsService } from '@org/auth-core';
+import { PetFeatureService } from '@org/pet-feature';
 import { PET_WS_EVENTS, PET_WS_NAMESPACE } from '@org/types';
 import { GAME_CONFIG } from '@org/validation-config';
 import { PET_MESSAGES } from '@org/validation-messages';
-
-import { PetFeatureService } from './pet-feature.service';
 
 import type {
   PetWsErrorPayload,

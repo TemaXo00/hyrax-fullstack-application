@@ -20,13 +20,13 @@
     "@org/database": "0.0.1",
     "@org/dto": "0.0.1",
     "@org/http-decorators": "0.0.1",
+    "@org/pet-mappers": "0.0.1",
     "@org/redis": "0.0.1",
     "@org/types": "0.0.1",
     "@org/validation-config": "0.0.1",
     "@org/validation-messages": "0.0.1",
     "express": "^5.2.1",
     "tslib": "^2.3.0",
-    "@org/pet-feature": "0.0.1",
     "@nestjs/throttler": "^6.7.1"
   },
   "devDependencies": {

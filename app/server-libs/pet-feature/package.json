@@ -16,24 +16,17 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
-    "@nestjs/config": "^12.0.1",
-    "@nestjs/websockets": "^11.2.8",
     "@org/auth-core": "0.0.1",
     "@org/database": "0.0.1",
     "@org/dto": "0.0.1",
     "@org/http-decorators": "0.0.1",
+    "@org/pet-mappers": "0.0.1",
+    "@org/pet-utils": "0.0.1",
     "@org/redis": "0.0.1",
     "@org/types": "0.0.1",
     "@org/validation-config": "0.0.1",
     "@org/validation-messages": "0.0.1",
-    "class-validator": "^0.15.1",
-    "express": "^5.2.1",
-    "tslib": "^2.3.0",
-    "@nestjs/platform-socket.io": "^11.2.8",
     "@nestjs/throttler": "^6.7.1",
-    "socket.io": "^4.8.4"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.25"
+    "tslib": "^2.3.0"
   }
 }

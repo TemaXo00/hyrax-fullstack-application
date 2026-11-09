@@ -1,3 +1,4 @@
+import { calculateXpForNextLevel } from '@org/pet-utils';
 import {
   getAchievementConditionLabel,
   getCosmeticRarityLabel,
@@ -7,8 +8,6 @@ import {
   getUpgradeEffectLabel,
 } from '@org/types';
 import { GAME_CONFIG } from '@org/validation-config';
-
-import { calculateXpForNextLevel } from '../game/pet-game.rules';
 
 import type {
   AchievementEntity,
