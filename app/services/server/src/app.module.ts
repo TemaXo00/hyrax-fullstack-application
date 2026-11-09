@@ -8,7 +8,9 @@ import { AuthFeatureModule } from '@org/auth-feature';
 import { AuthSessionFeatureModule } from '@org/auth-session-feature';
 import { DatabaseModule } from '@org/database';
 import { PetFeatureModule } from '@org/pet-feature';
+import { PetWsFeatureModule } from '@org/pet-ws-feature';
 import { RedisModule } from '@org/redis';
+import { ShopFeatureModule } from '@org/shop-feature';
 import { GAME_CONFIG } from '@org/validation-config';
 import { THROTTLE_MESSAGES } from '@org/validation-messages';
 
@@ -58,6 +60,8 @@ import { AppThrottlerGuard } from './app-throttler.guard';
     AuthSessionFeatureModule,
     AuthAdminFeatureModule,
     PetFeatureModule,
+    PetWsFeatureModule,
+    ShopFeatureModule,
   ],
   providers: [
     {

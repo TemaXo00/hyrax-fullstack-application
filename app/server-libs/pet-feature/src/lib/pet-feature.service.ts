@@ -4,25 +4,24 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DatabaseService } from '@org/database';
-import { CACHE_KEYS, RedisService } from '@org/redis';
-import { getPetActionLabel } from '@org/types';
-import { GAME_CONFIG } from '@org/validation-config';
-import { PET_MESSAGES } from '@org/validation-messages';
-
-import {
-  applyXp,
-  calculateClickReward,
-  calculatePetDecay,
-  calculateWalkReward,
-  clampPetStat,
-} from './game/pet-game.rules';
 import {
   mapCosmeticInventory,
   mapFoodInventory,
   mapPet,
   mapPlayerStatistic,
   mapUserUpgrade,
-} from './mappers/game.mappers';
+} from '@org/pet-mappers';
+import {
+  applyXp,
+  calculateClickReward,
+  calculatePetDecay,
+  calculateWalkReward,
+  clampPetStat,
+} from '@org/pet-utils';
+import { CACHE_KEYS, RedisService } from '@org/redis';
+import { getPetActionLabel } from '@org/types';
+import { GAME_CONFIG } from '@org/validation-config';
+import { PET_MESSAGES } from '@org/validation-messages';
 
 import type { Prisma, Pet } from '@org/database';
 import type {

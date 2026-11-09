@@ -52,7 +52,19 @@
       "path": "./server-libs/redis"
     },
     {
+      "path": "./server-libs/pet-utils"
+    },
+    {
+      "path": "./server-libs/pet-mappers"
+    },
+    {
       "path": "./server-libs/pet-feature"
+    },
+    {
+      "path": "./server-libs/pet-ws-feature"
+    },
+    {
+      "path": "./server-libs/shop-feature"
     }
   ],
   "compilerOptions": {}

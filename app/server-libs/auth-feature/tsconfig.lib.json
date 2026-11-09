@@ -13,6 +13,7 @@
     "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"],
   "references": [
     {
       "path": "../../core-libs/validation-config/tsconfig.lib.json"
@@ -39,7 +40,7 @@
       "path": "../redis/tsconfig.lib.json"
     },
     {
-      "path": "../pet-feature/tsconfig.lib.json"
+      "path": "../pet-mappers/tsconfig.lib.json"
     }
   ]
 }
