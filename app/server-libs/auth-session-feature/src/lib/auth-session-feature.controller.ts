@@ -1,5 +1,5 @@
 import { Body, Param } from '@nestjs/common';
-import { ChangeSessionLocalNameDto } from '@org/dto';
+import { ChangeSessionLocalNameDto, SessionResponseDto } from '@org/dto';
 import {
   CurrentUser,
   DELETEProtectedMethod,
@@ -8,6 +8,7 @@ import {
   PATCHProtectedMethod,
 } from '@org/http-decorators';
 import { AUTH_SESSION_ROUTES } from '@org/types';
+import { AUTH_MESSAGES } from '@org/validation-messages';
 
 import { AuthSessionFeatureService } from './auth-session-feature.service';
 
@@ -22,6 +23,8 @@ export class AuthSessionFeatureController {
     summary: 'Мои сессии',
     operationDesc:
       'Возвращает все активные сессии текущего пользователя. Возвращаемый тип данных - SessionEntity[].',
+    responseDto: SessionResponseDto,
+    responseIsArray: true,
   })
   async getMySessions(
     @CurrentUser() user: AuthenticatedUser,
@@ -34,6 +37,15 @@ export class AuthSessionFeatureController {
     summary: 'Переименование сессии',
     operationDesc:
       'Меняет отображаемое название одной из сессий текущего пользователя. Возвращаемый тип данных - SessionEntity.',
+    requestDto: ChangeSessionLocalNameDto,
+    responseDto: SessionResponseDto,
+    errors: [
+      {
+        status: 404,
+        description: 'Сессия не найдена',
+        message: AUTH_MESSAGES.SESSION_NOT_FOUND,
+      },
+    ],
   })
   async changeLocalName(
     @CurrentUser() user: AuthenticatedUser,
@@ -48,6 +60,18 @@ export class AuthSessionFeatureController {
     summary: 'Удаление сессии',
     operationDesc:
       'Удаляет одну из сессий текущего пользователя, кроме текущей. Для выхода из текущей сессии используйте logout. Возвращаемый тип данных - void.',
+    errors: [
+      {
+        status: 400,
+        description: 'Нельзя удалить текущую сессию',
+        message: AUTH_MESSAGES.CANNOT_DELETE_CURRENT_SESSION,
+      },
+      {
+        status: 404,
+        description: 'Сессия не найдена',
+        message: AUTH_MESSAGES.SESSION_NOT_FOUND,
+      },
+    ],
   })
   async deleteSession(
     @CurrentUser() user: AuthenticatedUser,
