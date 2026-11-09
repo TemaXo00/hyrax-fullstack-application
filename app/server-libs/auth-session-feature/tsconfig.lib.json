@@ -13,6 +13,7 @@
     "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"],
   "references": [
     {
       "path": "../../core-libs/types/tsconfig.lib.json"
