@@ -1,15 +1,13 @@
 import { applyDecorators, QueryMethod } from '@nestjs/common';
-import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiForbiddenResponse,
-  ApiInternalServerErrorResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
-import { buildRequestBody, buildSuccessResponse } from '../swagger.util';
+import {
+  PUBLIC_ERRORS,
+  PROTECTED_ERRORS,
+  buildErrorResponses,
+  buildRequestBody,
+  buildSuccessResponse,
+} from '../swagger.util';
 import { Validate } from '../validate.decorator';
 
 import type {
@@ -24,12 +22,7 @@ export const QUERYMethod = (options: IMethodOptions): MethodDecorator => {
       description: options.operationDesc,
     }),
     ApiOkResponse(buildSuccessResponse(options, 'Запрос успешно обработан')),
-    ApiBadRequestResponse({
-      description: 'Запрос содержит некорректные данные',
-    }),
-    ApiInternalServerErrorResponse({
-      description: 'Внутренняя ошибка сервера',
-    }),
+    ...buildErrorResponses(options, 'GET', PUBLIC_ERRORS),
     ...buildRequestBody(options),
     QueryMethod(options.path),
   );
@@ -45,16 +38,7 @@ export const QUERYProtectedMethod = (
     }),
     ApiBearerAuth(),
     ApiOkResponse(buildSuccessResponse(options, 'Запрос успешно обработан')),
-    ApiBadRequestResponse({
-      description: 'Запрос содержит некорректные данные',
-    }),
-    ApiUnauthorizedResponse({ description: 'Требуется авторизация' }),
-    ApiForbiddenResponse({
-      description: 'Недостаточно прав для выполнения действия',
-    }),
-    ApiInternalServerErrorResponse({
-      description: 'Внутренняя ошибка сервера',
-    }),
+    ...buildErrorResponses(options, 'GET', PROTECTED_ERRORS),
     ...buildRequestBody(options),
     QueryMethod(options.path),
     Validate(...(options.roles ?? [])),

@@ -1,5 +1,11 @@
 import { Body, Param } from '@nestjs/common';
-import { BlockUserDto, UserPaginationDto } from '@org/dto';
+import {
+  BlockUserDto,
+  PaginatedUsersResponseDto,
+  SessionResponseDto,
+  UserPaginationDto,
+  UserResponseDto,
+} from '@org/dto';
 import {
   CurrentUser,
   DELETEProtectedMethod,
@@ -9,6 +15,7 @@ import {
   QUERYProtectedMethod,
 } from '@org/http-decorators';
 import { AUTH_ADMIN_ROUTES } from '@org/types';
+import { AUTH_ADMIN_MESSAGES } from '@org/validation-messages';
 
 import { AuthAdminFeatureService } from './auth-admin-feature.service';
 
@@ -28,6 +35,8 @@ export class AuthAdminFeatureController {
     summary: 'Список пользователей',
     operationDesc:
       'Возвращает постраничный список пользователей. Поддерживает поиск по никнейму и фильтры по роли и блокировке. Доступно только администраторам. Возвращаемый тип данных - PaginatedUsersOutput.',
+    requestDto: UserPaginationDto,
+    responseDto: PaginatedUsersResponseDto,
     roles: ['ADMIN'],
   })
   async getUsers(
@@ -41,6 +50,14 @@ export class AuthAdminFeatureController {
     summary: 'Пользователь по ID',
     operationDesc:
       'Возвращает подробную информацию о пользователе. Доступно только администраторам. Возвращаемый тип данных - UserEntity.',
+    responseDto: UserResponseDto,
+    errors: [
+      {
+        status: 404,
+        description: 'Пользователь не найден',
+        message: AUTH_ADMIN_MESSAGES.USER_NOT_FOUND,
+      },
+    ],
     roles: ['ADMIN'],
   })
   async getUserById(@Param('id') id: string): Promise<UserEntity> {
@@ -52,6 +69,15 @@ export class AuthAdminFeatureController {
     summary: 'Сессии пользователя',
     operationDesc:
       'Возвращает все активные сессии указанного пользователя. Доступно только администраторам. Возвращаемый тип данных - SessionEntity[].',
+    responseDto: SessionResponseDto,
+    responseIsArray: true,
+    errors: [
+      {
+        status: 404,
+        description: 'Пользователь не найден',
+        message: AUTH_ADMIN_MESSAGES.USER_NOT_FOUND,
+      },
+    ],
     roles: ['ADMIN'],
   })
   async getUserSessions(@Param('id') id: string): Promise<SessionEntity[]> {
@@ -63,6 +89,13 @@ export class AuthAdminFeatureController {
     summary: 'Отзыв всех сессий пользователя',
     operationDesc:
       'Удаляет все активные сессии указанного пользователя и пишет запись в журнал действий администратора. Доступно только администраторам. Возвращаемый тип данных - void.',
+    errors: [
+      {
+        status: 404,
+        description: 'Пользователь не найден',
+        message: AUTH_ADMIN_MESSAGES.USER_NOT_FOUND,
+      },
+    ],
     roles: ['ADMIN'],
   })
   async revokeUserSessions(
@@ -77,6 +110,20 @@ export class AuthAdminFeatureController {
     summary: 'Блокировка пользователя',
     operationDesc:
       'Блокирует пользователя, отзывает все его сессии и пишет запись в журнал действий администратора. Доступно только администраторам. Возвращаемый тип данных - UserEntity.',
+    requestDto: BlockUserDto,
+    responseDto: UserResponseDto,
+    errors: [
+      {
+        status: 400,
+        description: 'Некорректные данные блокировки',
+        message: AUTH_ADMIN_MESSAGES.CANNOT_BLOCK_SELF,
+      },
+      {
+        status: 404,
+        description: 'Пользователь не найден',
+        message: AUTH_ADMIN_MESSAGES.USER_NOT_FOUND,
+      },
+    ],
     roles: ['ADMIN'],
   })
   async blockUser(
@@ -92,6 +139,19 @@ export class AuthAdminFeatureController {
     summary: 'Разблокировка пользователя',
     operationDesc:
       'Снимает блокировку с пользователя и пишет запись в журнал действий администратора. Доступно только администраторам. Возвращаемый тип данных - UserEntity.',
+    responseDto: UserResponseDto,
+    errors: [
+      {
+        status: 400,
+        description: 'Пользователь не заблокирован',
+        message: AUTH_ADMIN_MESSAGES.USER_NOT_BLOCKED,
+      },
+      {
+        status: 404,
+        description: 'Пользователь не найден',
+        message: AUTH_ADMIN_MESSAGES.USER_NOT_FOUND,
+      },
+    ],
     roles: ['ADMIN'],
   })
   async unblockUser(
