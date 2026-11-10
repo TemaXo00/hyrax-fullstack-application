@@ -46,6 +46,9 @@
       "path": "./client-libs/about-page"
     },
     {
+      "path": "./client-libs/api-client"
+    },
+    {
       "path": "./server-libs/nest-launcher"
     },
     {

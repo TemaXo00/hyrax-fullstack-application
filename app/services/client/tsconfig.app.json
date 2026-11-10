@@ -29,6 +29,9 @@
     },
     {
       "path": "../../client-libs/home-page/tsconfig.lib.json"
+    },
+    {
+      "path": "../../client-libs/api-client/tsconfig.lib.json"
     }
   ]
 }
