@@ -18,5 +18,10 @@
     "src/**/*.tsx",
     "src/**/*.vue"
   ],
+  "references": [
+    {
+      "path": "../api-client/tsconfig.lib.json"
+    }
+  ],
   "exclude": ["eslint.config.js", "eslint.config.cjs", "eslint.config.mjs"]
 }

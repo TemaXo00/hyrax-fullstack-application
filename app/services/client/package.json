@@ -1,5 +1,10 @@
 {
   "name": "@org/client",
   "version": "0.0.1",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@org/about-page": "0.0.1",
+    "@org/api-client": "0.0.1",
+    "@org/home-page": "0.0.1"
+  }
 }

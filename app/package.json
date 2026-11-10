@@ -80,8 +80,7 @@
     "services/*",
     "core-libs/*",
     "server-libs/*",
-    "client-libs/home-page",
-    "client-libs/about-page"
+    "client-libs/*"
   ],
   "dependencies": {
     "@nestjs-modules/ioredis": "^2.3.1",
