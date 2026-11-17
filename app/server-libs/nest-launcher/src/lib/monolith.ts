@@ -1,4 +1,9 @@
-import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  INestApplication,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
@@ -17,23 +22,20 @@ import { setupMonolithEnvVariables } from './utils/env-variables.util.js';
 import { logMonolithMessages } from './utils/log-info.util.js';
 
 import type { MonolithOptions } from './types/monolith.type.js';
+import type { MonolithEnvVariablesResponse } from './types/utils.type.js';
 
-export async function monolith<T>(options: MonolithOptions<T>): Promise<void> {
-  const app = await NestFactory.create(options.module, {
-    logger: options.logs
-      ? new ConsoleLogger(CONSOLE_LOGGER_CONFIG(options.name.toUpperCase()))
-      : ['error', 'warn'],
-  });
+const APP_PREFIX = 'api';
 
-  const logger = new Logger();
+export function configureMonolith<T>(
+  app: INestApplication,
+  options: MonolithOptions<T>,
+): MonolithEnvVariablesResponse {
   const config = app.get(ConfigService);
-
-  const APP_NAME = options.name.toUpperCase();
-  const APP_PREFIX = 'api';
-  const APP_SCOPE = options.scope.toUpperCase();
-
-  const { APP_PORT, REQUEST_LIMIT, IS_DEV, CORS_ORIGINS, WINDOW_MS } =
-    setupMonolithEnvVariables(APP_SCOPE, APP_NAME, config);
+  const env = setupMonolithEnvVariables(
+    options.scope.toUpperCase(),
+    options.name.toUpperCase(),
+    config,
+  );
 
   if (options.prefix) {
     app.setGlobalPrefix(APP_PREFIX);
@@ -56,7 +58,7 @@ export async function monolith<T>(options: MonolithOptions<T>): Promise<void> {
   }
 
   if (options.cors) {
-    app.enableCors(CORS_CONFIG(CORS_ORIGINS));
+    app.enableCors(CORS_CONFIG(env.CORS_ORIGINS));
   }
 
   if (options.cookie) {
@@ -75,11 +77,21 @@ export async function monolith<T>(options: MonolithOptions<T>): Promise<void> {
     app.use(compression());
   }
 
-  logMonolithMessages(
-    options,
-    { APP_PORT, REQUEST_LIMIT, IS_DEV, CORS_ORIGINS, WINDOW_MS },
-    logger,
-  );
+  return env;
+}
+
+export async function monolith<T>(options: MonolithOptions<T>): Promise<void> {
+  const app = await NestFactory.create(options.module, {
+    logger: options.logs
+      ? new ConsoleLogger(CONSOLE_LOGGER_CONFIG(options.name.toUpperCase()))
+      : ['error', 'warn'],
+  });
+
+  const logger = new Logger();
+  const APP_NAME = options.name.toUpperCase();
+  const env = configureMonolith(app, options);
+
+  logMonolithMessages(options, env, logger);
 
   process.on('SIGTERM', async () => {
     logger.log('Received SIGTERM, shutting down...');
@@ -94,7 +106,7 @@ export async function monolith<T>(options: MonolithOptions<T>): Promise<void> {
   });
 
   try {
-    await app.listen(APP_PORT);
+    await app.listen(env.APP_PORT);
     logger.log(`${APP_NAME} started successfully`);
   } catch (error) {
     logger.error('Failed to start');
