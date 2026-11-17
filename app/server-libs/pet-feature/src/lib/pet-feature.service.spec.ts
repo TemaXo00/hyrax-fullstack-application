@@ -389,9 +389,9 @@ describe('PetFeatureService', () => {
         totalCoinsEarned: 50n,
       });
 
-      const result = await service.walk(USER_ID);
+      const result = await service.walk(USER_ID, { clicks: 5 });
 
-      expect(result.coinsEarned).toBe('45');
+      expect(result.coinsEarned).toBe('225');
       expect(result.action).toBe('WALK');
       expect(result.pet.mood).toBe(100);
       expect(result.pet.hunger).toBe(35);
@@ -411,13 +411,13 @@ describe('PetFeatureService', () => {
     it('rejects a walk while the cooldown is active', async () => {
       const { service, tx } = setup();
       const pet = buildPet({
-        lastWalkAt: new Date(NOW.getTime() - 30_000),
+        lastWalkAt: new Date(NOW.getTime() - 10_000),
       });
 
       tx.user.findUnique.mockResolvedValue(buildUser(pet));
 
-      await expect(service.walk(USER_ID)).rejects.toThrow(
-        PET_MESSAGES.WALK_COOLDOWN(30),
+      await expect(service.walk(USER_ID, { clicks: 1 })).rejects.toThrow(
+        PET_MESSAGES.WALK_COOLDOWN(20),
       );
       expect(tx.playerStatistic.update).not.toHaveBeenCalled();
     });
@@ -434,7 +434,7 @@ describe('PetFeatureService', () => {
       }));
       tx.playerStatistic.update.mockResolvedValue(stats);
 
-      const result = await service.walk(USER_ID);
+      const result = await service.walk(USER_ID, { clicks: 1 });
 
       expect(result.pet.hunger).toBe(0);
     });

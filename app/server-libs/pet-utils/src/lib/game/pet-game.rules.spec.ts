@@ -123,12 +123,16 @@ describe('pet-game rules', () => {
       expect(getMoodMultiplier(500)).toBe(1);
     });
 
-    it('multiplies the walk reward by the configured multiplier', () => {
-      expect(calculateWalkReward(10, 100)).toBe(
+    it('multiplies the walk reward by clicks and the configured multiplier', () => {
+      expect(calculateWalkReward(10, 100, 1)).toBe(
         10 * GAME_CONFIG.WALK.REWARD_MULTIPLIER,
       );
-      expect(calculateWalkReward(10, 0)).toBe(
+      expect(calculateWalkReward(10, 100, 5)).toBe(
+        10 * 5 * GAME_CONFIG.WALK.REWARD_MULTIPLIER,
+      );
+      expect(calculateWalkReward(10, 0, 2)).toBe(
         Math.max(1, Math.floor(10 * GAME_CONFIG.CLICK.MOOD_MULTIPLIER_MIN)) *
+          2 *
           GAME_CONFIG.WALK.REWARD_MULTIPLIER,
       );
     });
