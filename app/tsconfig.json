@@ -61,10 +61,10 @@
       "path": "./server-libs/pet-feature"
     },
     {
-      "path": "./server-libs/pet-ws-feature"
+      "path": "./server-libs/shop-feature"
     },
     {
-      "path": "./server-libs/shop-feature"
+      "path": "./server-libs/shop-admin-feature"
     }
   ],
   "compilerOptions": {}
