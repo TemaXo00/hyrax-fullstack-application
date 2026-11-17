@@ -18,5 +18,10 @@
     "strictPropertyInitialization": false,
     "types": ["jest", "node"]
   },
-  "include": ["**/*.spec.ts"]
+  "include": [
+    "**/*.spec.ts",
+    "**/*.e2e-spec.ts",
+    "services/server/e2e/**/*.ts",
+    "services/server/e2e/**/*.mjs"
+  ]
 }

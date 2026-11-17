@@ -18,13 +18,7 @@
   ],
   "references": [
     {
-      "path": "../../server-libs/nest-launcher/tsconfig.lib.json"
-    },
-    {
       "path": "../../server-libs/redis/tsconfig.lib.json"
-    },
-    {
-      "path": "../../server-libs/database/tsconfig.lib.json"
     },
     {
       "path": "../../server-libs/auth-session-feature/tsconfig.lib.json"
@@ -39,19 +33,28 @@
       "path": "../../server-libs/auth-admin-feature/tsconfig.lib.json"
     },
     {
-      "path": "../../core-libs/validation-messages/tsconfig.lib.json"
-    },
-    {
       "path": "../../core-libs/validation-config/tsconfig.lib.json"
-    },
-    {
-      "path": "../../server-libs/shop-feature/tsconfig.lib.json"
     },
     {
       "path": "../../server-libs/shop-admin-feature/tsconfig.lib.json"
     },
     {
+      "path": "../../server-libs/shop-feature/tsconfig.lib.json"
+    },
+    {
       "path": "../../server-libs/pet-feature/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/nest-launcher/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/database/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core-libs/validation-messages/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core-libs/types/tsconfig.lib.json"
     }
   ]
 }
