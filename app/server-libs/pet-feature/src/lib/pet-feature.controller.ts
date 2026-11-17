@@ -6,6 +6,7 @@ import {
   PetResponseDto,
   PetStateResponseDto,
   RenamePetDto,
+  WalkPetDto,
 } from '@org/dto';
 import {
   CurrentUser,
@@ -87,13 +88,15 @@ export class PetFeatureController {
     path: PET_ROUTES.WALK,
     summary: 'Выгул питомца',
     operationDesc:
-      'Начисляет повышенную награду за выгул, повышает настроение, снижает голод и добавляет опыт. Действие имеет кулдаун. Возвращаемый тип данных - PetActionResultEntity.',
+      'Начисляет награду за выгул с учётом количества накопленных кликов, повышает настроение, снижает голод и добавляет опыт. После выгула действует кулдаун 30 секунд. Возвращаемый тип данных - PetActionResultEntity.',
+    requestDto: WalkPetDto,
     responseDto: PetActionResultResponseDto,
   })
   async walk(
     @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: WalkPetDto,
   ): Promise<PetActionResultEntity> {
-    return await this.service.walk(user.id);
+    return await this.service.walk(user.id, dto);
   }
 
   @POSTProtectedMethod({

@@ -23,7 +23,9 @@ export const GAME_CONFIG = {
     REWARD_MULTIPLIER: 5,
     MOOD_BONUS: 10,
     HUNGER_COST: 5,
-    COOLDOWN_SECONDS: 60,
+    COOLDOWN_SECONDS: 30,
+    CLICKS_MIN: 1,
+    CLICKS_MAX: 1000,
   },
   FEED: {
     XP: 5,
@@ -41,6 +43,5 @@ export const GAME_CONFIG = {
     CLICK_TTL_MS: 10_000,
     WALK_LIMIT: 5,
     WALK_TTL_MS: 60_000,
-    WS_ACTION_COOLDOWN_MS: 100,
   },
 } as const;

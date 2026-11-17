@@ -76,9 +76,17 @@ export function calculateClickReward(clickPower: number, mood: number): number {
   return Math.max(1, Math.floor(clickPower * getMoodMultiplier(mood)));
 }
 
-export function calculateWalkReward(clickPower: number, mood: number): number {
+export function calculateWalkReward(
+  clickPower: number,
+  mood: number,
+  clicks: number,
+): number {
+  const safeClicks = Math.max(1, Math.floor(clicks));
+
   return (
-    calculateClickReward(clickPower, mood) * GAME_CONFIG.WALK.REWARD_MULTIPLIER
+    calculateClickReward(clickPower, mood) *
+    safeClicks *
+    GAME_CONFIG.WALK.REWARD_MULTIPLIER
   );
 }
 
