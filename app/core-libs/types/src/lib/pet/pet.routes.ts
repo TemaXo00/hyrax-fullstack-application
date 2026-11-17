@@ -7,6 +7,14 @@ export const PET_ROUTES = {
   WALK: 'walk',
 } as const;
 
+export const PET_ADMIN_ROUTES = {
+  BASE: 'admin/pets',
+  LIST: '',
+  GET_BY_ID: ':id',
+  UPDATE: ':id',
+  UPDATE_STATISTICS: ':id/statistics',
+} as const;
+
 export const FOOD_SHOP_ROUTES = {
   BASE: 'shop/foods',
   LIST: '',

@@ -60,13 +60,13 @@ module.exports = {
     '^@org/pet-feature$': join(rootDir, 'server-libs/pet-feature/src/index.ts'),
     '^@org/pet-utils$': join(rootDir, 'server-libs/pet-utils/src/index.ts'),
     '^@org/pet-mappers$': join(rootDir, 'server-libs/pet-mappers/src/index.ts'),
-    '^@org/pet-ws-feature$': join(
-      rootDir,
-      'server-libs/pet-ws-feature/src/index.ts',
-    ),
     '^@org/shop-feature$': join(
       rootDir,
       'server-libs/shop-feature/src/index.ts',
+    ),
+    '^@org/shop-admin-feature$': join(
+      rootDir,
+      'server-libs/shop-admin-feature/src/index.ts',
     ),
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },

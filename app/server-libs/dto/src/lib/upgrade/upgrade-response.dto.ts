@@ -4,6 +4,7 @@ import { UPGRADE_EFFECT_TYPES } from '@org/types';
 import { PaginationMetaResponseDto } from '../shared/pagination-response.dto';
 
 import type {
+  PaginatedUpgradesAdminOutput,
   PaginatedUpgradesOutput,
   UpgradeEntity,
   UpgradePurchaseEntity,
@@ -142,4 +143,18 @@ export class PaginatedUpgradesResponseDto implements PaginatedUpgradesOutput {
     type: [UpgradeShopResponseDto],
   })
   upgrades: UpgradeShopResponseDto[];
+}
+
+export class PaginatedUpgradesAdminResponseDto implements PaginatedUpgradesAdminOutput {
+  @ApiProperty({
+    description: 'Метаданные пагинации',
+    type: PaginationMetaResponseDto,
+  })
+  pagination: PaginationMetaResponseDto;
+
+  @ApiProperty({
+    description: 'Список улучшений',
+    type: [UpgradeResponseDto],
+  })
+  upgrades: UpgradeResponseDto[];
 }

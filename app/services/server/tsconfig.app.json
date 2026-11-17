@@ -48,7 +48,7 @@
       "path": "../../server-libs/shop-feature/tsconfig.lib.json"
     },
     {
-      "path": "../../server-libs/pet-ws-feature/tsconfig.lib.json"
+      "path": "../../server-libs/shop-admin-feature/tsconfig.lib.json"
     },
     {
       "path": "../../server-libs/pet-feature/tsconfig.lib.json"
