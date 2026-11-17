@@ -9,6 +9,11 @@ import { AUTH_MESSAGES } from '@org/validation-messages';
 
 import { AuthFeatureService } from './auth-feature.service';
 
+import type {
+  AuthPasswordService,
+  AuthSessionService,
+  AuthTokenService,
+} from '@org/auth-core';
 import type { DatabaseService } from '@org/database';
 import type { RedisService } from '@org/redis';
 
@@ -112,9 +117,9 @@ function setup(): Setup {
   };
   const service = new AuthFeatureService(
     db as unknown as DatabaseService,
-    password,
-    token,
-    session,
+    password as unknown as AuthPasswordService,
+    token as unknown as AuthTokenService,
+    session as unknown as AuthSessionService,
     redis as unknown as RedisService,
   );
 
