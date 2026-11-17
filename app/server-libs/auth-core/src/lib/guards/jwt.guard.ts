@@ -35,4 +35,30 @@ export class AuthJwtGuard extends AuthGuard('jwt') {
 
     return true;
   }
+
+  override handleRequest<TUser = AuthJwtPayload>(
+    err: unknown,
+    user: TUser | false,
+    info: unknown,
+  ): TUser {
+    if (user) {
+      return user;
+    }
+
+    if (err instanceof Error) {
+      throw err;
+    }
+
+    if (info instanceof Error) {
+      if (info.name === 'TokenExpiredError') {
+        throw new UnauthorizedException(AUTH_MESSAGES.TOKEN_EXPIRED);
+      }
+
+      if (info.name === 'JsonWebTokenError') {
+        throw new UnauthorizedException(AUTH_MESSAGES.INVALID_TOKEN);
+      }
+    }
+
+    throw new UnauthorizedException(AUTH_MESSAGES.UNAUTHORIZED);
+  }
 }
