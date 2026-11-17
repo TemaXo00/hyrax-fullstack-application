@@ -84,24 +84,43 @@ npm run all:dev
 Все маршруты, кроме регистрации и входа, требуют JWT в заголовке
 `Authorization: Bearer <access-token>`.
 
-| Группа | Маршрут | Назначение |
-| --- | --- | --- |
-| Auth | `POST /api/auth/register` | Регистрация и выдача пары токенов |
-| Auth | `POST /api/auth/login` | Вход в аккаунт |
-| Auth | `POST /api/auth/refresh` | Обновление access-токена |
-| Auth | `GET /api/auth/me` | Профиль со связанными сущностями |
-| Pets | `GET /api/pets/me` | Состояние питомца, инвентарь, улучшения и затухание |
-| Pets | `PATCH /api/pets/name` | Переименование питомца |
-| Pets | `POST /api/pets/click` | Клик по питомцу |
-| Pets | `POST /api/pets/walk` | Выгул питомца |
-| Pets | `POST /api/pets/feed` | Кормление питомца |
-| Food shop | `QUERY /api/shop/foods` | Каталог еды с пагинацией и поиском |
-| Food shop | `POST /api/shop/foods/:id/buy` | Покупка еды |
-| Cosmetic shop | `QUERY /api/shop/cosmetics` | Каталог косметики |
-| Cosmetic shop | `POST /api/shop/cosmetics/:id/buy` | Покупка косметики |
-| Cosmetic shop | `PATCH /api/shop/cosmetics/:id/equip` | Экипировка и снятие косметики |
-| Upgrade shop | `QUERY /api/shop/upgrades` | Каталог улучшений с уровнями игрока |
-| Upgrade shop | `POST /api/shop/upgrades/:id/buy` | Покупка следующего уровня улучшения |
+| Группа        | Маршрут                                | Назначение                                          |
+| ------------- | -------------------------------------- | --------------------------------------------------- |
+| Auth          | `POST /api/auth/register`              | Регистрация и выдача пары токенов                   |
+| Auth          | `POST /api/auth/login`                 | Вход в аккаунт                                      |
+| Auth          | `POST /api/auth/refresh`               | Обновление access-токена                            |
+| Auth          | `GET /api/auth/me`                     | Профиль со связанными сущностями                    |
+| Pets          | `GET /api/pets/me`                     | Состояние питомца, инвентарь, улучшения и затухание |
+| Pets          | `PATCH /api/pets/name`                 | Переименование питомца                              |
+| Pets          | `POST /api/pets/click`                 | Клик по питомцу                                     |
+| Pets          | `POST /api/pets/walk`                  | Выгул питомца с количеством накопленных кликов      |
+| Pets          | `POST /api/pets/feed`                  | Кормление питомца                                   |
+| Food shop     | `QUERY /api/shop/foods`                | Каталог еды с пагинацией и поиском                  |
+| Food shop     | `POST /api/shop/foods/:id/buy`         | Покупка еды                                         |
+| Cosmetic shop | `QUERY /api/shop/cosmetics`            | Каталог косметики                                   |
+| Cosmetic shop | `POST /api/shop/cosmetics/:id/buy`     | Покупка косметики                                   |
+| Cosmetic shop | `PATCH /api/shop/cosmetics/:id/equip`  | Экипировка и снятие косметики                       |
+| Upgrade shop  | `QUERY /api/shop/upgrades`             | Каталог улучшений с уровнями игрока                 |
+| Upgrade shop  | `POST /api/shop/upgrades/:id/buy`      | Покупка следующего уровня улучшения                 |
+| Pets admin    | `QUERY /api/admin/pets`                | Все питомцы с владельцами и статистикой             |
+| Pets admin    | `GET /api/admin/pets/:id`              | Питомец по идентификатору                           |
+| Pets admin    | `PATCH /api/admin/pets/:id`            | Изменение параметров питомца                        |
+| Pets admin    | `PATCH /api/admin/pets/:id/statistics` | Изменение статистики владельца                      |
+| Shop admin    | `QUERY /api/admin/shop/foods`          | Все позиции каталога еды                            |
+| Shop admin    | `GET /api/admin/shop/foods/:id`        | Еда по идентификатору                               |
+| Shop admin    | `POST /api/admin/shop/foods`           | Создание еды                                        |
+| Shop admin    | `PATCH /api/admin/shop/foods/:id`      | Обновление еды                                      |
+| Shop admin    | `DELETE /api/admin/shop/foods/:id`     | Удаление еды                                        |
+| Shop admin    | `QUERY /api/admin/shop/cosmetics`      | Все позиции каталога косметики                      |
+| Shop admin    | `GET /api/admin/shop/cosmetics/:id`    | Косметика по идентификатору                         |
+| Shop admin    | `POST /api/admin/shop/cosmetics`       | Создание косметики                                  |
+| Shop admin    | `PATCH /api/admin/shop/cosmetics/:id`  | Обновление косметики                                |
+| Shop admin    | `DELETE /api/admin/shop/cosmetics/:id` | Удаление косметики                                  |
+| Shop admin    | `QUERY /api/admin/shop/upgrades`       | Все позиции каталога улучшений                      |
+| Shop admin    | `GET /api/admin/shop/upgrades/:id`     | Улучшение по идентификатору                         |
+| Shop admin    | `POST /api/admin/shop/upgrades`        | Создание улучшения                                  |
+| Shop admin    | `PATCH /api/admin/shop/upgrades/:id`   | Обновление улучшения                                |
+| Shop admin    | `DELETE /api/admin/shop/upgrades/:id`  | Удаление улучшения                                  |
 
 Списки магазинов используют HTTP-метод `QUERY` и принимают параметры
 пагинации в теле запроса.
@@ -111,8 +130,9 @@ npm run all:dev
 - Настроение питомца падает со 100 до 0 за 6 часов, голод — за 12 часов.
 - Клик приносит `clickPower`, масштабированный настроением (от 50% до 100%),
   и 2 XP.
-- Выгул приносит пятикратную награду, повышает настроение на 10, снижает
-  голод на 5, даёт 10 XP и имеет кулдаун 60 секунд.
+- Выгул принимает количество накопленных кликов, приносит награду за каждый
+  клик с пятикратным множителем, повышает настроение на 10, снижает голод на 5,
+  даёт 10 XP и имеет кулдаун 30 секунд.
 - Кормление тратит одну единицу еды, восстанавливает голод и настроение и
   даёт 5 XP.
 - Порог следующего уровня: `100 + (level - 1) * 50`, максимальный уровень — 100.
@@ -120,19 +140,12 @@ npm run all:dev
 - Улучшения `CLICK_POWER` увеличивают силу клика, `AUTO_INCOME` начисляют
   пассивный доход за каждую полную минуту с последней синхронизации.
 
-### WebSocket
-
-Игровые события доступны в namespace `game` (Socket.IO). JWT передаётся в
-`handshake.auth.token`, `query.token` или заголовке `Authorization`.
-Сервер отправляет события `pet:state`, `pet:click`, `pet:walk`, `pet:feed`
-и `pet:error`. Для игровых действий действует отдельный кулдаун на сокет.
-
 ### Ограничение частоты запросов
 
 Для HTTP-маршрутов используется глобальный `@nestjs/throttler`.
 Окно и общий лимит задаются переменными `HYRAX_SERVER_WINDOW_MS_MINUTES` и
 `HYRAX_SERVER_REQUEST_LIMIT`. Для авторизации, клика и выгула настроены
-отдельные, более строгие лимиты. WebSocket-соединения throttling не затрагивает.
+отдельные, более строгие лимиты.
 
 ### Сиды
 
@@ -152,7 +165,7 @@ npm test
 ```
 
 Тесты написаны на Jest (`ts-jest`) и покрывают игровые правила, сервисы
-питомца и магазинов, WebSocket-авторизацию, шлюз и throttling.
+питомца, магазинов и админские операции, а также throttling.
 
 ## Участники проекта
 
