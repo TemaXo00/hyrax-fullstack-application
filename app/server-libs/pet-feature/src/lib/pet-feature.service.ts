@@ -32,6 +32,7 @@ import type {
   PetServiceContract,
   PetStateEntity,
   RenamePetInput,
+  WalkPetInput,
 } from '@org/types';
 
 const PROFILE_INCLUDE = {
@@ -250,7 +251,10 @@ export class PetFeatureService implements PetServiceContract {
     return result;
   }
 
-  async walk(userId: string): Promise<PetActionResultEntity> {
+  async walk(
+    userId: string,
+    input: WalkPetInput,
+  ): Promise<PetActionResultEntity> {
     const now = new Date();
     const result = await this.db.$transaction(async (tx) => {
       const profile = await this.syncProfile(tx, userId, now);
@@ -269,6 +273,7 @@ export class PetFeatureService implements PetServiceContract {
       const reward = calculateWalkReward(
         profile.stats.clickPower,
         profile.pet.mood,
+        input.clicks,
       );
       const mood = clampPetStat(
         profile.pet.mood + GAME_CONFIG.WALK.MOOD_BONUS,

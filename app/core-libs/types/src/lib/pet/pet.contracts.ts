@@ -4,6 +4,7 @@ import type {
   PetEntity,
   PetStateEntity,
   RenamePetInput,
+  WalkPetInput,
 } from './pet.types.js';
 import type {
   CosmeticInventoryEntity,
@@ -28,7 +29,7 @@ export interface PetServiceContract {
   rename(userId: string, input: RenamePetInput): Promise<PetEntity>;
   feed(userId: string, input: FeedPetInput): Promise<PetActionResultEntity>;
   click(userId: string): Promise<PetActionResultEntity>;
-  walk(userId: string): Promise<PetActionResultEntity>;
+  walk(userId: string, input: WalkPetInput): Promise<PetActionResultEntity>;
 }
 
 export interface FoodShopServiceContract {

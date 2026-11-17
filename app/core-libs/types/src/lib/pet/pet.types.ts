@@ -99,3 +99,7 @@ export interface RenamePetInput {
 export interface FeedPetInput {
   foodId: string;
 }
+
+export interface WalkPetInput {
+  clicks: number;
+}
