@@ -3,9 +3,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
+    "customConditions": null,
     "ignoreDeprecations": "6.0",
     "target": "es2021",
-    "customConditions": [],
     "composite": false,
     "declaration": false,
     "declarationMap": false,
