@@ -1,5 +1,7 @@
-import { USER_ROLE_OPTIONS } from '@org/types';
+import { ADMIN_LOG_ACTIONS, USER_ROLE_OPTIONS } from '@org/types';
 import { AUTH_CONFIG } from '@org/validation-config';
+
+const ADMIN_LOG_ACTION_OPTIONS = Object.values(ADMIN_LOG_ACTIONS).join(', ');
 
 export const AUTH_ADMIN_MESSAGES = {
   USER_NOT_FOUND: 'Пользователь не найден',
@@ -22,5 +24,11 @@ export const AUTH_ADMIN_MESSAGES = {
     NOT_EMPTY: 'Дата блокировки не должна быть пустой',
     TYPE: 'Дата блокировки должна быть в формате даты и времени. Пример: 2026-09-26T09:00:00.000Z',
     DATE: 'Минимальная дата блокировки должна быть позже текущей даты',
+  },
+  ADMIN_LOG_ACTION_VALIDATION: {
+    INVALID: `Недопустимое действие администратора. Доступные варианты: ${ADMIN_LOG_ACTION_OPTIONS}`,
+  },
+  ADMIN_LOG_ID_VALIDATION: {
+    TYPE: 'Идентификатор должен быть строкой',
   },
 } as const;

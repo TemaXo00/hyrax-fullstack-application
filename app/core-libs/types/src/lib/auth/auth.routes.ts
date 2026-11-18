@@ -24,4 +24,5 @@ export const AUTH_ADMIN_ROUTES = {
   REVOKE_USER_SESSIONS: ':id/sessions',
   BLOCK_USER: ':id/block',
   UNBLOCK_USER: ':id/unblock',
+  GET_LOGS: 'logs',
 } as const;

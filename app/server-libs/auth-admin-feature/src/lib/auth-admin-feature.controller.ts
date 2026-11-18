@@ -1,6 +1,8 @@
 import { Body, Param } from '@nestjs/common';
 import {
+  AdminLogQueryDto,
   BlockUserDto,
+  PaginatedAdminLogsResponseDto,
   PaginatedUsersResponseDto,
   SessionResponseDto,
   UserPaginationDto,
@@ -21,6 +23,7 @@ import { AuthAdminFeatureService } from './auth-admin-feature.service';
 
 import type {
   AuthenticatedUser,
+  PaginatedAdminLogsOutput,
   PaginatedUsersOutput,
   SessionEntity,
   UserEntity,
@@ -43,6 +46,21 @@ export class AuthAdminFeatureController {
     @Body() dto: UserPaginationDto,
   ): Promise<PaginatedUsersOutput> {
     return await this.service.getUsers(dto);
+  }
+
+  @QUERYProtectedMethod({
+    path: AUTH_ADMIN_ROUTES.GET_LOGS,
+    summary: 'Журнал действий администраторов',
+    operationDesc:
+      'Возвращает постраничный журнал действий администраторов с фильтрами по действию, администратору и пользователю. Доступно только администраторам. Возвращаемый тип данных - PaginatedAdminLogsOutput.',
+    requestDto: AdminLogQueryDto,
+    responseDto: PaginatedAdminLogsResponseDto,
+    roles: ['ADMIN'],
+  })
+  async getLogs(
+    @Body() dto: AdminLogQueryDto,
+  ): Promise<PaginatedAdminLogsOutput> {
+    return await this.service.getLogs(dto);
   }
 
   @GETProtectedMethod({

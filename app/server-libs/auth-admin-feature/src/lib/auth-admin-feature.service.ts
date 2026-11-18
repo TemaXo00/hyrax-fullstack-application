@@ -5,13 +5,17 @@ import {
 } from '@nestjs/common';
 import { AuthSessionService, type SessionRecord } from '@org/auth-core';
 import { DatabaseService } from '@org/database';
+import { buildPaginationMeta, normalizePagination } from '@org/pet-utils';
 import { CACHE_KEYS, RedisService } from '@org/redis';
 import {
   ADMIN_LOG_ACTIONS,
   getUserRoleLabel,
   type AdminLogAction,
+  type AdminLogEntity,
+  type AdminLogQueryInput,
   type AuthAdminServiceContract,
   type BlockUserInput,
+  type PaginatedAdminLogsOutput,
   type PaginatedUsersOutput,
   type SessionEntity,
   type UserEntity,
@@ -45,6 +49,15 @@ const USER_VIEW_SELECT = {
   createdAt: true,
   lastLoginAt: true,
 } as const;
+
+const ADMIN_LOG_INCLUDE = {
+  admin: { select: { id: true, nickname: true } },
+  targetUser: { select: { id: true, nickname: true } },
+} satisfies Prisma.AdminLogInclude;
+
+type AdminLogView = Prisma.AdminLogGetPayload<{
+  include: typeof ADMIN_LOG_INCLUDE;
+}>;
 
 @Injectable()
 export class AuthAdminFeatureService implements AuthAdminServiceContract {
@@ -188,6 +201,41 @@ export class AuthAdminFeatureService implements AuthAdminServiceContract {
     return this.mapUser(updatedUser);
   }
 
+  async getLogs(
+    pagination: AdminLogQueryInput,
+  ): Promise<PaginatedAdminLogsOutput> {
+    const normalized = normalizePagination(pagination);
+    const where: Prisma.AdminLogWhereInput = {};
+
+    if (pagination.action) {
+      where.action = pagination.action;
+    }
+
+    if (pagination.adminId) {
+      where.adminId = pagination.adminId;
+    }
+
+    if (pagination.targetUserId) {
+      where.targetUserId = pagination.targetUserId;
+    }
+
+    const [total, logs] = await Promise.all([
+      this.db.adminLog.count({ where }),
+      this.db.adminLog.findMany({
+        where,
+        include: ADMIN_LOG_INCLUDE,
+        orderBy: [{ createdAt: 'desc' }, { id: 'asc' }],
+        skip: normalized.skip,
+        take: normalized.limit,
+      }),
+    ]);
+
+    return {
+      pagination: buildPaginationMeta(normalized, total),
+      logs: logs.map((log) => this.mapAdminLog(log)),
+    };
+  }
+
   private async invalidateUserCaches(userId: string): Promise<void> {
     await Promise.all([
       this.redis.del(CACHE_KEYS.adminUser(userId), CACHE_KEYS.me(userId)),
@@ -265,6 +313,17 @@ export class AuthAdminFeatureService implements AuthAdminServiceContract {
         details: details ?? undefined,
       },
     });
+  }
+
+  private mapAdminLog(log: AdminLogView): AdminLogEntity {
+    return {
+      id: log.id,
+      action: log.action as AdminLogAction,
+      admin: log.admin,
+      targetUser: log.targetUser,
+      details: log.details,
+      createdAt: log.createdAt,
+    };
   }
 
   private mapUser(user: UserView): UserEntity {

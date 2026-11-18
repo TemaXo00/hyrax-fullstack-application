@@ -1,4 +1,8 @@
 import type {
+  AdminLogQueryInput,
+  PaginatedAdminLogsOutput,
+} from './admin-log.types.js';
+import type {
   AuthSessionResult,
   BlockUserInput,
   ChangePasswordInput,
@@ -58,4 +62,5 @@ export interface AuthAdminServiceContract {
     input: BlockUserInput,
   ): Promise<UserEntity>;
   unblockUser(adminId: string, userId: string): Promise<UserEntity>;
+  getLogs(pagination: AdminLogQueryInput): Promise<PaginatedAdminLogsOutput>;
 }
