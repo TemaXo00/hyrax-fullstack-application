@@ -11,6 +11,7 @@ import type {
   MeEntity,
   RegisterInput,
   SessionEntity,
+  UpdateUserRoleInput,
   UserEntity,
 } from './auth.types.js';
 import type {
@@ -62,5 +63,10 @@ export interface AuthAdminServiceContract {
     input: BlockUserInput,
   ): Promise<UserEntity>;
   unblockUser(adminId: string, userId: string): Promise<UserEntity>;
+  changeUserRole(
+    adminId: string,
+    userId: string,
+    input: UpdateUserRoleInput,
+  ): Promise<UserEntity>;
   getLogs(pagination: AdminLogQueryInput): Promise<PaginatedAdminLogsOutput>;
 }

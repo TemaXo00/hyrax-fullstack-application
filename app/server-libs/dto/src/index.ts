@@ -7,6 +7,7 @@ export * from './lib/auth/change-session-local-name.dto';
 export * from './lib/auth/user-pagination.dto';
 export * from './lib/auth/admin-log.dto';
 export * from './lib/auth/block-user.dto';
+export * from './lib/auth/update-user-role.dto';
 export * from './lib/auth/auth-response.dto';
 
 export * from './lib/shared/pagination.dto';

@@ -8,6 +8,8 @@ export const AUTH_ADMIN_MESSAGES = {
   CANNOT_BLOCK_SELF: 'Нельзя заблокировать собственный аккаунт',
   USER_ALREADY_BLOCKED: 'Пользователь уже заблокирован',
   USER_NOT_BLOCKED: 'Пользователь не заблокирован',
+  CANNOT_CHANGE_OWN_ROLE: 'Нельзя изменить роль собственного аккаунта',
+  USER_ROLE_UNCHANGED: 'Пользователь уже имеет указанную роль',
   INVALID_BLOCK_DATE: 'Некорректная дата блокировки',
   BLOCK_PREVIOUS_DATE: 'Дата блокировки должна быть позже текущей даты',
   BLOCK_TOO_FAR: `Дата блокировки слишком далеко в будущем. Максимальная длительность блокировки — ${AUTH_CONFIG.BLOCK.MAX_DATE_YEAR} лет`,
