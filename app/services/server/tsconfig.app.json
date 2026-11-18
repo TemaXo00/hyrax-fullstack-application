@@ -48,6 +48,12 @@
       "path": "../../server-libs/leaderboard-feature/tsconfig.lib.json"
     },
     {
+      "path": "../../server-libs/achievement-feature/tsconfig.lib.json"
+    },
+    {
+      "path": "../../server-libs/daily-reward-feature/tsconfig.lib.json"
+    },
+    {
       "path": "../../server-libs/nest-launcher/tsconfig.lib.json"
     },
     {

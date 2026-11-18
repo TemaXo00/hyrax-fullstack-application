@@ -64,6 +64,12 @@
       "path": "./server-libs/leaderboard-feature"
     },
     {
+      "path": "./server-libs/achievement-feature"
+    },
+    {
+      "path": "./server-libs/daily-reward-feature"
+    },
+    {
       "path": "./server-libs/shop-feature"
     },
     {

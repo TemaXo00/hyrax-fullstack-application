@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { AchievementFeatureModule } from '@org/achievement-feature';
 import { AuthAdminFeatureModule } from '@org/auth-admin-feature';
 import { AuthCoreModule } from '@org/auth-core';
 import { AuthFeatureModule } from '@org/auth-feature';
 import { AuthSessionFeatureModule } from '@org/auth-session-feature';
+import { DailyRewardFeatureModule } from '@org/daily-reward-feature';
 import { DatabaseModule } from '@org/database';
 import { LeaderboardFeatureModule } from '@org/leaderboard-feature';
 import { PetFeatureModule } from '@org/pet-feature';
@@ -60,6 +62,8 @@ import { THROTTLE_MESSAGES } from '@org/validation-messages';
     AuthAdminFeatureModule,
     PetFeatureModule,
     LeaderboardFeatureModule,
+    AchievementFeatureModule,
+    DailyRewardFeatureModule,
     ShopFeatureModule,
     ShopAdminFeatureModule,
   ],
