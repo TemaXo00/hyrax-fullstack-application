@@ -68,6 +68,7 @@
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "@nestjs/throttler": "^6.7.1",
+    "@org/leaderboard-feature": "0.0.1",
     "@org/pet-feature": "0.0.1",
     "@org/shop-feature": "0.0.1",
     "@org/shop-admin-feature": "0.0.1",

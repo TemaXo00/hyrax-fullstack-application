@@ -7,6 +7,7 @@ import { AuthCoreModule } from '@org/auth-core';
 import { AuthFeatureModule } from '@org/auth-feature';
 import { AuthSessionFeatureModule } from '@org/auth-session-feature';
 import { DatabaseModule } from '@org/database';
+import { LeaderboardFeatureModule } from '@org/leaderboard-feature';
 import { PetFeatureModule } from '@org/pet-feature';
 import { RedisModule } from '@org/redis';
 import { ShopAdminFeatureModule } from '@org/shop-admin-feature';
@@ -58,6 +59,7 @@ import { THROTTLE_MESSAGES } from '@org/validation-messages';
     AuthSessionFeatureModule,
     AuthAdminFeatureModule,
     PetFeatureModule,
+    LeaderboardFeatureModule,
     ShopFeatureModule,
     ShopAdminFeatureModule,
   ],
