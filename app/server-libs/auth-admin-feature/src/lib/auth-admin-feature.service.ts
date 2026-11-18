@@ -192,6 +192,7 @@ export class AuthAdminFeatureService implements AuthAdminServiceContract {
     await Promise.all([
       this.redis.del(CACHE_KEYS.adminUser(userId), CACHE_KEYS.me(userId)),
       this.redis.delByPrefix(CACHE_KEYS.adminUsersPrefix()),
+      this.redis.delByPrefix(CACHE_KEYS.leaderboardPrefix()),
     ]);
   }
 

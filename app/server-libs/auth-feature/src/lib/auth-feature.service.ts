@@ -107,7 +107,10 @@ export class AuthFeatureService implements AuthServiceContract {
       },
     });
 
-    await this.redis.delByPrefix(CACHE_KEYS.adminUsersPrefix());
+    await Promise.all([
+      this.redis.delByPrefix(CACHE_KEYS.adminUsersPrefix()),
+      this.redis.delByPrefix(CACHE_KEYS.leaderboardPrefix()),
+    ]);
 
     return await this.createSession(user, meta);
   }
@@ -294,6 +297,7 @@ export class AuthFeatureService implements AuthServiceContract {
     await Promise.all([
       this.redis.del(CACHE_KEYS.me(userId), CACHE_KEYS.adminUser(userId)),
       this.redis.delByPrefix(CACHE_KEYS.adminUsersPrefix()),
+      this.redis.delByPrefix(CACHE_KEYS.leaderboardPrefix()),
     ]);
   }
 

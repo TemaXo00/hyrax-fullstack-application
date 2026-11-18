@@ -130,7 +130,7 @@ function setup(): {
   service: PetFeatureService;
   tx: ReturnType<typeof createTx>;
   db: { $transaction: jest.Mock };
-  redis: { del: jest.Mock };
+  redis: { del: jest.Mock; delByPrefix: jest.Mock };
 } {
   const tx = createTx();
   const db = {
@@ -143,6 +143,7 @@ function setup(): {
   };
   const redis = {
     del: jest.fn().mockResolvedValue(undefined),
+    delByPrefix: jest.fn().mockResolvedValue(undefined),
   };
   const service = new PetFeatureService(
     db as unknown as DatabaseService,
