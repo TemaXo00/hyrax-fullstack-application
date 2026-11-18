@@ -13,7 +13,9 @@ export * from './lib/shared/pagination-response.dto';
 export * from './lib/shared/error-response.dto';
 
 export * from './lib/player/login-streak-response.dto';
+export * from './lib/achievement/achievement.dto';
 export * from './lib/achievement/achievement-response.dto';
+export * from './lib/daily-reward/daily-reward-response.dto';
 
 export * from './lib/pet/rename-pet.dto';
 export * from './lib/pet/feed-pet.dto';
