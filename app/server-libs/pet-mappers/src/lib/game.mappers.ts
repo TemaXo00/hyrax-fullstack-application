@@ -15,6 +15,7 @@ import type {
   CosmeticInventoryEntity,
   CosmeticRarity,
   CosmeticSlot,
+  DailyRewardEntity,
   FoodEntity,
   FoodInventoryEntity,
   PetEntity,
@@ -131,6 +132,15 @@ export interface UserAchievementRecord {
   id: string;
   achievment: AchievementRecord;
   createdAt: Date;
+}
+
+export interface DailyRewardRecord {
+  id: string;
+  dayNumber: number;
+  rewardCoins: number;
+  rewardItem: CosmeticRecord | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export function mapPet(pet: PetRecord): PetEntity {
@@ -281,5 +291,16 @@ export function mapUserAchievement(
     id: item.id,
     achievement: mapAchievement(item.achievment),
     createdAt: item.createdAt,
+  };
+}
+
+export function mapDailyReward(reward: DailyRewardRecord): DailyRewardEntity {
+  return {
+    id: reward.id,
+    dayNumber: reward.dayNumber,
+    rewardCoins: reward.rewardCoins,
+    rewardItem: reward.rewardItem ? mapCosmetic(reward.rewardItem) : null,
+    createdAt: reward.createdAt,
+    updatedAt: reward.updatedAt,
   };
 }
