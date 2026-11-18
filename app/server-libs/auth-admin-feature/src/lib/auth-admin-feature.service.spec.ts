@@ -212,7 +212,7 @@ describe('AuthAdminFeatureService', () => {
 
   describe('revokeUserSessions', () => {
     it('revokes sessions and writes an admin log', async () => {
-      const { service, db, session } = setup();
+      const { service, db, session, redis } = setup();
 
       db.user.findUnique.mockResolvedValue(USER);
 
@@ -227,6 +227,9 @@ describe('AuthAdminFeatureService', () => {
           details: undefined,
         },
       });
+      expect(redis.delByPrefix).toHaveBeenCalledWith(
+        expect.stringContaining(USER_ID),
+      );
     });
   });
 
@@ -410,6 +413,73 @@ describe('AuthAdminFeatureService', () => {
             createdAt: NOW,
           },
         ],
+      });
+    });
+  });
+
+  describe('changeUserRole', () => {
+    it('rejects changing the admin account role', async () => {
+      const { service } = setup();
+
+      await expect(
+        service.changeUserRole(ADMIN_ID, ADMIN_ID, { role: 'PLAYER' }),
+      ).rejects.toThrow(AUTH_ADMIN_MESSAGES.CANNOT_CHANGE_OWN_ROLE);
+    });
+
+    it('throws when the user does not exist', async () => {
+      const { service, db } = setup();
+
+      db.user.findUnique.mockResolvedValue(null);
+
+      await expect(
+        service.changeUserRole(ADMIN_ID, USER_ID, { role: 'ADMIN' }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('rejects an unchanged role', async () => {
+      const { service, db } = setup();
+
+      db.user.findUnique.mockResolvedValue(USER);
+
+      await expect(
+        service.changeUserRole(ADMIN_ID, USER_ID, { role: 'PLAYER' }),
+      ).rejects.toThrow(AUTH_ADMIN_MESSAGES.USER_ROLE_UNCHANGED);
+    });
+
+    it('changes the role, logs it and invalidates caches', async () => {
+      const { service, db, redis } = setup();
+
+      db.user.findUnique.mockResolvedValue(USER);
+      db.user.update.mockResolvedValue({ ...USER, role: 'ADMIN' });
+
+      const result = await service.changeUserRole(ADMIN_ID, USER_ID, {
+        role: 'ADMIN',
+      });
+
+      expect(db.user.update).toHaveBeenCalledWith({
+        where: { id: USER_ID },
+        data: { role: 'ADMIN' },
+        select: expect.any(Object),
+      });
+      expect(db.adminLog.create).toHaveBeenCalledWith({
+        data: {
+          adminId: ADMIN_ID,
+          action: ADMIN_LOG_ACTIONS.USER_ROLE_CHANGED,
+          targetUserId: USER_ID,
+          details: {
+            previousRole: 'PLAYER',
+            role: 'ADMIN',
+          },
+        },
+      });
+      expect(redis.del).toHaveBeenCalled();
+      expect(redis.delByPrefix).toHaveBeenCalledWith(
+        expect.stringContaining(USER_ID),
+      );
+      expect(result).toMatchObject({
+        id: USER_ID,
+        role: 'ADMIN',
+        roleLabel: 'Администратор',
       });
     });
   });
