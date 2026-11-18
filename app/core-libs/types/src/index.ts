@@ -17,4 +17,7 @@ export * from './lib/cosmetic/cosmetic-admin.types.js';
 export * from './lib/upgrade/upgrade.types.js';
 export * from './lib/upgrade/upgrade-admin.types.js';
 export * from './lib/achievement/achievement.types.js';
+export * from './lib/leaderboard/leaderboard.types.js';
+export * from './lib/leaderboard/leaderboard.contracts.js';
+export * from './lib/leaderboard/leaderboard.routes.js';
 export * from './lib/shop/shop-admin.routes.js';

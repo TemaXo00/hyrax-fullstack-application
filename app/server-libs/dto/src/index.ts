@@ -32,3 +32,6 @@ export * from './lib/cosmetic/cosmetic-admin.dto';
 
 export * from './lib/upgrade/upgrade-response.dto';
 export * from './lib/upgrade/upgrade-admin.dto';
+
+export * from './lib/leaderboard/leaderboard-query.dto';
+export * from './lib/leaderboard/leaderboard-response.dto';

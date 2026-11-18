@@ -2,6 +2,7 @@ export * from './lib/auth-admin.messages.js';
 export * from './lib/auth.messages.js';
 export * from './lib/cosmetic.messages.js';
 export * from './lib/food.messages.js';
+export * from './lib/leaderboard.messages.js';
 export * from './lib/pet.messages.js';
 export * from './lib/shared.messages.js';
 export * from './lib/shop.messages.js';
