@@ -249,6 +249,8 @@ describe('Admin REST (e2e)', () => {
     const admin = await createAdmin(adminClient);
     const player = getData(await playerClient.register('Игрок')).user;
 
+    expect((await playerClient.me()).status).toBe(200);
+
     const blockedUntil = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const block = await adminClient.patch<UserEntity>(
@@ -383,6 +385,8 @@ describe('Admin REST (e2e)', () => {
     const playerClient = getContext().client();
     const admin = await createAdmin(adminClient);
     const player = getData(await playerClient.register('Игрок')).user;
+
+    expect((await playerClient.me()).status).toBe(200);
 
     const revoke = await adminClient.delete(
       `/auth/admin/users/${player.id}/sessions`,
