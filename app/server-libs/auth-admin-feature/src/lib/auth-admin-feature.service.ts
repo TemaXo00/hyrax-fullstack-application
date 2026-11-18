@@ -18,6 +18,7 @@ import {
   type PaginatedAdminLogsOutput,
   type PaginatedUsersOutput,
   type SessionEntity,
+  type UpdateUserRoleInput,
   type UserEntity,
   type UserPaginationInput,
   type UserRole,
@@ -134,6 +135,7 @@ export class AuthAdminFeatureService implements AuthAdminServiceContract {
       userId,
       null,
     );
+    await this.invalidateUserCaches(userId);
   }
 
   async blockUser(
@@ -201,6 +203,41 @@ export class AuthAdminFeatureService implements AuthAdminServiceContract {
     return this.mapUser(updatedUser);
   }
 
+  async changeUserRole(
+    adminId: string,
+    userId: string,
+    input: UpdateUserRoleInput,
+  ): Promise<UserEntity> {
+    if (adminId === userId) {
+      throw new BadRequestException(AUTH_ADMIN_MESSAGES.CANNOT_CHANGE_OWN_ROLE);
+    }
+
+    const user = await this.findUserById(userId);
+
+    if (user.role === input.role) {
+      throw new BadRequestException(AUTH_ADMIN_MESSAGES.USER_ROLE_UNCHANGED);
+    }
+
+    const updatedUser = await this.db.user.update({
+      where: { id: userId },
+      data: { role: input.role },
+      select: USER_VIEW_SELECT,
+    });
+
+    await this.createAdminLog(
+      adminId,
+      ADMIN_LOG_ACTIONS.USER_ROLE_CHANGED,
+      userId,
+      {
+        previousRole: user.role,
+        role: input.role,
+      },
+    );
+    await this.invalidateUserCaches(userId);
+
+    return this.mapUser(updatedUser);
+  }
+
   async getLogs(
     pagination: AdminLogQueryInput,
   ): Promise<PaginatedAdminLogsOutput> {
@@ -239,6 +276,7 @@ export class AuthAdminFeatureService implements AuthAdminServiceContract {
   private async invalidateUserCaches(userId: string): Promise<void> {
     await Promise.all([
       this.redis.del(CACHE_KEYS.adminUser(userId), CACHE_KEYS.me(userId)),
+      this.redis.delByPrefix(CACHE_KEYS.authSessionPrefix(userId)),
       this.redis.delByPrefix(CACHE_KEYS.adminUsersPrefix()),
       this.redis.delByPrefix(CACHE_KEYS.leaderboardPrefix()),
     ]);

@@ -5,6 +5,7 @@ import {
   PaginatedAdminLogsResponseDto,
   PaginatedUsersResponseDto,
   SessionResponseDto,
+  UpdateUserRoleDto,
   UserPaginationDto,
   UserResponseDto,
 } from '@org/dto';
@@ -177,5 +178,34 @@ export class AuthAdminFeatureController {
     @Param('id') id: string,
   ): Promise<UserEntity> {
     return await this.service.unblockUser(admin.id, id);
+  }
+
+  @PATCHProtectedMethod({
+    path: AUTH_ADMIN_ROUTES.CHANGE_USER_ROLE,
+    summary: 'Изменение роли пользователя',
+    operationDesc:
+      'Меняет роль пользователя и пишет запись в журнал действий администратора. Не позволяет изменить роль собственного аккаунта. Доступно только администраторам. Возвращаемый тип данных - UserEntity.',
+    requestDto: UpdateUserRoleDto,
+    responseDto: UserResponseDto,
+    errors: [
+      {
+        status: 400,
+        description: 'Некорректная смена роли',
+        message: AUTH_ADMIN_MESSAGES.CANNOT_CHANGE_OWN_ROLE,
+      },
+      {
+        status: 404,
+        description: 'Пользователь не найден',
+        message: AUTH_ADMIN_MESSAGES.USER_NOT_FOUND,
+      },
+    ],
+    roles: ['ADMIN'],
+  })
+  async changeUserRole(
+    @CurrentUser() admin: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: UpdateUserRoleDto,
+  ): Promise<UserEntity> {
+    return await this.service.changeUserRole(admin.id, id, dto);
   }
 }
