@@ -85,48 +85,61 @@ npm run all:dev
 Все маршруты, кроме регистрации и входа, требуют JWT в заголовке
 `Authorization: Bearer <access-token>`.
 
-| Группа        | Маршрут                                | Назначение                                          |
-| ------------- | -------------------------------------- | --------------------------------------------------- |
-| Auth          | `POST /api/auth/register`              | Регистрация и выдача пары токенов                   |
-| Auth          | `POST /api/auth/login`                 | Вход в аккаунт                                      |
-| Auth          | `POST /api/auth/refresh`               | Обновление access-токена                            |
-| Auth          | `GET /api/auth/me`                     | Профиль со связанными сущностями                    |
-| Pets          | `GET /api/pets/me`                     | Состояние питомца, инвентарь, улучшения и затухание |
-| Pets          | `PATCH /api/pets/name`                 | Переименование питомца                              |
-| Pets          | `POST /api/pets/click`                 | Клик по питомцу                                     |
-| Pets          | `POST /api/pets/walk`                  | Выгул питомца с количеством накопленных кликов      |
-| Pets          | `POST /api/pets/feed`                  | Кормление питомца                                   |
-| Food shop     | `QUERY /api/shop/foods`                | Каталог еды с пагинацией и поиском                  |
-| Food shop     | `POST /api/shop/foods/:id/buy`         | Покупка еды                                         |
-| Cosmetic shop | `QUERY /api/shop/cosmetics`            | Каталог косметики                                   |
-| Cosmetic shop | `POST /api/shop/cosmetics/:id/buy`     | Покупка косметики                                   |
-| Cosmetic shop | `PATCH /api/shop/cosmetics/:id/equip`  | Экипировка и снятие косметики                       |
-| Upgrade shop  | `QUERY /api/shop/upgrades`             | Каталог улучшений с уровнями игрока                 |
-| Upgrade shop  | `POST /api/shop/upgrades/:id/buy`      | Покупка следующего уровня улучшения                 |
-| Pets admin    | `QUERY /api/admin/pets`                | Все питомцы с владельцами и статистикой             |
-| Pets admin    | `GET /api/admin/pets/:id`              | Питомец по идентификатору                           |
-| Pets admin    | `PATCH /api/admin/pets/:id`            | Изменение параметров питомца                        |
-| Pets admin    | `PATCH /api/admin/pets/:id/statistics` | Изменение статистики владельца                      |
-| Shop admin    | `QUERY /api/admin/shop/foods`          | Все позиции каталога еды                            |
-| Shop admin    | `GET /api/admin/shop/foods/:id`        | Еда по идентификатору                               |
-| Shop admin    | `POST /api/admin/shop/foods`           | Создание еды                                        |
-| Shop admin    | `PATCH /api/admin/shop/foods/:id`      | Обновление еды                                      |
-| Shop admin    | `DELETE /api/admin/shop/foods/:id`     | Удаление еды                                        |
-| Shop admin    | `QUERY /api/admin/shop/cosmetics`      | Все позиции каталога косметики                      |
-| Shop admin    | `GET /api/admin/shop/cosmetics/:id`    | Косметика по идентификатору                         |
-| Shop admin    | `POST /api/admin/shop/cosmetics`       | Создание косметики                                  |
-| Shop admin    | `PATCH /api/admin/shop/cosmetics/:id`  | Обновление косметики                                |
-| Shop admin    | `DELETE /api/admin/shop/cosmetics/:id` | Удаление косметики                                  |
-| Shop admin    | `QUERY /api/admin/shop/upgrades`       | Все позиции каталога улучшений                      |
-| Shop admin    | `GET /api/admin/shop/upgrades/:id`     | Улучшение по идентификатору                         |
-| Shop admin    | `POST /api/admin/shop/upgrades`        | Создание улучшения                                  |
-| Shop admin    | `PATCH /api/admin/shop/upgrades/:id`   | Обновление улучшения                                |
-| Shop admin    | `DELETE /api/admin/shop/upgrades/:id`  | Удаление улучшения                                  |
-| Leaderboard   | `QUERY /api/leaderboard`               | Глобальный рейтинг игроков по метрике               |
-| Leaderboard   | `QUERY /api/leaderboard/me`            | Позиция текущего игрока в рейтинге                  |
+| Группа              | Маршрут                                     | Назначение                                          |
+| ------------------- | ------------------------------------------- | --------------------------------------------------- |
+| Auth                | `POST /api/auth/register`                   | Регистрация и выдача пары токенов                   |
+| Auth                | `POST /api/auth/login`                      | Вход в аккаунт                                      |
+| Auth                | `POST /api/auth/refresh`                    | Обновление access-токена                            |
+| Auth                | `GET /api/auth/me`                          | Профиль со связанными сущностями                    |
+| Pets                | `GET /api/pets/me`                          | Состояние питомца, инвентарь, улучшения и затухание |
+| Pets                | `PATCH /api/pets/name`                      | Переименование питомца                              |
+| Pets                | `POST /api/pets/click`                      | Клик по питомцу                                     |
+| Pets                | `POST /api/pets/walk`                       | Выгул питомца с количеством накопленных кликов      |
+| Pets                | `POST /api/pets/feed`                       | Кормление питомца                                   |
+| Food shop           | `QUERY /api/shop/foods`                     | Каталог еды с пагинацией и поиском                  |
+| Food shop           | `POST /api/shop/foods/:id/buy`              | Покупка еды                                         |
+| Cosmetic shop       | `QUERY /api/shop/cosmetics`                 | Каталог косметики                                   |
+| Cosmetic shop       | `POST /api/shop/cosmetics/:id/buy`          | Покупка косметики                                   |
+| Cosmetic shop       | `PATCH /api/shop/cosmetics/:id/equip`       | Экипировка и снятие косметики                       |
+| Upgrade shop        | `QUERY /api/shop/upgrades`                  | Каталог улучшений с уровнями игрока                 |
+| Upgrade shop        | `POST /api/shop/upgrades/:id/buy`           | Покупка следующего уровня улучшения                 |
+| Pets admin          | `QUERY /api/admin/pets`                     | Все питомцы с владельцами и статистикой             |
+| Pets admin          | `GET /api/admin/pets/:id`                   | Питомец по идентификатору                           |
+| Pets admin          | `PATCH /api/admin/pets/:id`                 | Изменение параметров питомца                        |
+| Pets admin          | `PATCH /api/admin/pets/:id/statistics`      | Изменение статистики владельца                      |
+| Shop admin          | `QUERY /api/admin/shop/foods`               | Все позиции каталога еды                            |
+| Shop admin          | `GET /api/admin/shop/foods/:id`             | Еда по идентификатору                               |
+| Shop admin          | `POST /api/admin/shop/foods`                | Создание еды                                        |
+| Shop admin          | `PATCH /api/admin/shop/foods/:id`           | Обновление еды                                      |
+| Shop admin          | `DELETE /api/admin/shop/foods/:id`          | Удаление еды                                        |
+| Shop admin          | `QUERY /api/admin/shop/cosmetics`           | Все позиции каталога косметики                      |
+| Shop admin          | `GET /api/admin/shop/cosmetics/:id`         | Косметика по идентификатору                         |
+| Shop admin          | `POST /api/admin/shop/cosmetics`            | Создание косметики                                  |
+| Shop admin          | `PATCH /api/admin/shop/cosmetics/:id`       | Обновление косметики                                |
+| Shop admin          | `DELETE /api/admin/shop/cosmetics/:id`      | Удаление косметики                                  |
+| Shop admin          | `QUERY /api/admin/shop/upgrades`            | Все позиции каталога улучшений                      |
+| Shop admin          | `GET /api/admin/shop/upgrades/:id`          | Улучшение по идентификатору                         |
+| Shop admin          | `POST /api/admin/shop/upgrades`             | Создание улучшения                                  |
+| Shop admin          | `PATCH /api/admin/shop/upgrades/:id`        | Обновление улучшения                                |
+| Shop admin          | `DELETE /api/admin/shop/upgrades/:id`       | Удаление улучшения                                  |
+| Leaderboard         | `QUERY /api/leaderboard`                    | Глобальный рейтинг игроков по метрике               |
+| Leaderboard         | `QUERY /api/leaderboard/me`                 | Позиция текущего игрока в рейтинге                  |
+| Achievements        | `QUERY /api/achievements`                   | Достижения с прогрессом текущего игрока             |
+| Achievements        | `POST /api/achievements/:id/claim`          | Получение награды за достижение                     |
+| Daily rewards       | `QUERY /api/daily-rewards`                  | Календарь, серия входов и доступность награды       |
+| Daily rewards       | `POST /api/daily-rewards/claim`             | Получение ежедневной награды                        |
+| Achievements admin  | `QUERY /api/admin/achievements`             | Все достижения каталога                             |
+| Achievements admin  | `GET /api/admin/achievements/:id`           | Достижение по идентификатору                        |
+| Achievements admin  | `POST /api/admin/achievements`              | Создание достижения                                 |
+| Achievements admin  | `PATCH /api/admin/achievements/:id`         | Обновление достижения                               |
+| Achievements admin  | `DELETE /api/admin/achievements/:id`        | Удаление достижения                                 |
+| Daily rewards admin | `GET /api/admin/daily-rewards`              | Календарь ежедневных наград                         |
+| Daily rewards admin | `PATCH /api/admin/daily-rewards/:dayNumber` | Обновление награды за день                          |
+| Auth admin          | `QUERY /api/auth/admin/users/logs`          | Журнал действий администраторов                     |
 
-Списки магазинов и лидерборд используют HTTP-метод `QUERY` и принимают
-параметры пагинации и фильтрации в теле запроса.
+Списки магазинов, лидерборд, достижения, ежедневные награды и журнал
+администратора используют HTTP-метод `QUERY` и принимают параметры пагинации и
+фильтрации в теле запроса.
 
 ### Игровая механика
 
@@ -162,6 +175,48 @@ npm run all:dev
 - Ответы кешируются в Redis; кеш рейтинга сбрасывается при регистрации, входе,
   действиях питомца, изменении данных администратором и блокировке игрока.
 
+### Достижения
+
+Условие получения достижения задаётся типом и пороговым значением:
+
+| Тип условия          | Подпись                | Источник значения                  |
+| -------------------- | ---------------------- | ---------------------------------- |
+| `TOTAL_CLICKS`       | Всего кликов           | `PlayerStatistic.totalClicks`      |
+| `TOTAL_FEEDS`        | Всего кормлений        | `PlayerStatistic.totalFeeds`       |
+| `LEVEL`              | Уровень питомца        | `Pet.level`                        |
+| `TOTAL_COINS_EARNED` | Всего заработано монет | `PlayerStatistic.totalCoinsEarned` |
+| `STREAK`             | Серия входов           | `PlayerStatistic.streak`           |
+
+- Прогресс в ответе ограничивается пороговым значением; статусы `isUnlocked`,
+  `isClaimed` и дата `claimedAt` показывают готовность и факт получения.
+- Награда выдаётся в транзакции и увеличивает `coins` и `totalCoinsEarned`;
+  повторное получение возвращает `409`, невыполненное условие — `400`.
+- Администратор управляет каталогом достижений; код уникален, а удаление
+  достижения, уже полученного игроком, возвращает `409`.
+- Изменения каталога и выдача награды сбрасывают кеш профилей и лидерборда.
+
+### Ежедневные награды
+
+- Календарь состоит из 7 дней; награда за день содержит монеты и, опционально,
+  косметику.
+- Первое получение начинает серию с дня 1. Если последняя награда была получена
+  вчера, серия продолжается, иначе сбрасывается; номер дня вычисляется как
+  `((streak - 1) % 7) + 1`.
+- Награду можно получить один раз в сутки (по UTC); повторный запрос возвращает
+  `409`.
+- Косметика выдаётся один раз: при повторном владении предметом `itemGranted`
+  равен `false`, но запись о награде сохраняется.
+- Получение награды синхронизирует `PlayerStatistic.streak`, увеличивает
+  `coins` и `totalCoinsEarned` и сбрасывает кеш профиля и лидерборда.
+- Администратор может изменить монеты и предмет для любого дня календаря.
+
+### Журнал администратора
+
+`QUERY /api/auth/admin/users/logs` возвращает действия администраторов: кто,
+над кем и когда выполнил блокировку, разблокировку или отзыв сессий. Доступен
+только роли `ADMIN`, поддерживает фильтры `action`, `adminId`, `targetUserId` и
+пагинацию. Записи отдаются от новых к старым и не кешируются.
+
 ### Ограничение частоты запросов
 
 Для HTTP-маршрутов используется глобальный `@nestjs/throttler`.
@@ -176,8 +231,8 @@ cd app
 npm run db:seed
 ```
 
-Команда заполняет каталоги еды, косметики и улучшений, а также конфигурацию
-ежедневных наград (`DailyRewardConfig`) на 7 дней.
+Команда заполняет каталоги еды, косметики, улучшений и достижений, а также
+конфигурацию ежедневных наград (`DailyRewardConfig`) на 7 дней.
 
 ### Тесты
 
@@ -187,8 +242,8 @@ npm test
 ```
 
 Unit-тесты написаны на Jest (`ts-jest`) и покрывают игровые правила, сервисы
-питомца, магазинов, лидерборда и админские операции, guard-ы авторизации, а
-также throttling.
+питомца, магазинов, достижений, ежедневных наград, лидерборда и админские
+операции, включая чтение журнала, guard-ы авторизации, а также throttling.
 
 ### E2E-тесты
 
@@ -210,8 +265,8 @@ npm run test:e2e
 4. останавливает и удаляет контейнеры вместе с тестовыми данными.
 
 Перед каждым тестом прикладные таблицы очищаются (`TRUNCATE ... CASCADE`), а
-каталоги еды, косметики и улучшений пересеиваются из фикстур. Redis очищается
-командой `FLUSHDB`.
+каталоги еды, косметики, улучшений и достижений, а также дни ежедневных наград
+пересеиваются из фикстур. Redis очищается командой `FLUSHDB`.
 
 Покрытые сценарии:
 
@@ -221,10 +276,16 @@ npm run test:e2e
   с кулдауном, кормление и эффект улучшений;
 - `shop.e2e-spec.ts` — каталоги, покупка еды и косметики, экипировка по слотам,
   уровни улучшений и нехватка монет;
-- `admin.e2e-spec.ts` — роли `ADMIN`, блокировки и журнал действий, управление
-  питомцами и каталогами, конфликты удаления;
+- `admin.e2e-spec.ts` — роли `ADMIN`, блокировки и запись в журнал действий,
+  управление питомцами и каталогами, конфликты удаления;
 - `leaderboard.e2e-spec.ts` — рейтинг по всем метрикам, пагинация, позиция
   текущего игрока, исключение заблокированных и сброс кеша после клика;
+- `achievements.e2e-spec.ts` — прогресс и статусы достижений, выдача награды,
+  повторная выдача, админский CRUD и конфликт удаления;
+- `daily-rewards.e2e-spec.ts` — календарь, выдача награды, продолжение и сброс
+  серии, разовая выдача косметики и админское обновление дней;
+- `admin-logs.e2e-spec.ts` — журнал действий, фильтры, пагинация и доступ
+  только для `ADMIN`;
 - `security.e2e-spec.ts` — единый формат ошибок, `429` на выгуле и
   Swagger-контракт.
 
