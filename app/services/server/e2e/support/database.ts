@@ -1,4 +1,10 @@
-import { ALL_UPGRADES, FOODS, COSMETICS } from './fixtures';
+import {
+  ALL_ACHIEVEMENTS,
+  ALL_UPGRADES,
+  DAILY_REWARDS,
+  FOODS,
+  COSMETICS,
+} from './fixtures';
 
 import type { DatabaseService, Prisma } from '@org/database';
 
@@ -38,6 +44,12 @@ export async function seedCatalog(db: DatabaseService): Promise<void> {
   });
   await db.upgrade.createMany({
     data: ALL_UPGRADES,
+  });
+  await db.achievment.createMany({
+    data: ALL_ACHIEVEMENTS,
+  });
+  await db.dailyRewardConfig.createMany({
+    data: DAILY_REWARDS,
   });
 }
 

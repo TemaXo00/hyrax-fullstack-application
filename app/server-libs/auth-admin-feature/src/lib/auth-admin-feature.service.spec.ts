@@ -32,7 +32,11 @@ interface Setup {
       findUnique: jest.Mock;
       update: jest.Mock;
     };
-    adminLog: { create: jest.Mock };
+    adminLog: {
+      create: jest.Mock;
+      count: jest.Mock;
+      findMany: jest.Mock;
+    };
   };
   session: {
     listByUser: jest.Mock;
@@ -53,7 +57,11 @@ function setup(): Setup {
       findUnique: jest.fn(),
       update: jest.fn(),
     },
-    adminLog: { create: jest.fn().mockResolvedValue(undefined) },
+    adminLog: {
+      create: jest.fn().mockResolvedValue(undefined),
+      count: jest.fn(),
+      findMany: jest.fn(),
+    },
   };
   const session = {
     listByUser: jest.fn(),
@@ -342,6 +350,67 @@ describe('AuthAdminFeatureService', () => {
       expect(redis.del).toHaveBeenCalled();
       expect(redis.delByPrefix).toHaveBeenCalled();
       expect(result).toMatchObject({ id: USER_ID, isBlocked: true });
+    });
+  });
+
+  describe('getLogs', () => {
+    it('filters and maps the admin log', async () => {
+      const { service, db } = setup();
+
+      db.adminLog.count.mockResolvedValue(1);
+      db.adminLog.findMany.mockResolvedValue([
+        {
+          id: 'log-1',
+          action: ADMIN_LOG_ACTIONS.USER_BLOCKED,
+          admin: { id: ADMIN_ID, nickname: 'Админ' },
+          targetUser: { id: USER_ID, nickname: 'Тест' },
+          details: { blockReason: 'Причина' },
+          createdAt: NOW,
+        },
+      ]);
+
+      const result = await service.getLogs({
+        action: ADMIN_LOG_ACTIONS.USER_BLOCKED,
+        adminId: ADMIN_ID,
+        targetUserId: USER_ID,
+        page: 2,
+        limit: 5,
+      });
+
+      expect(db.adminLog.findMany).toHaveBeenCalledWith({
+        where: {
+          action: ADMIN_LOG_ACTIONS.USER_BLOCKED,
+          adminId: ADMIN_ID,
+          targetUserId: USER_ID,
+        },
+        include: {
+          admin: { select: { id: true, nickname: true } },
+          targetUser: { select: { id: true, nickname: true } },
+        },
+        orderBy: [{ createdAt: 'desc' }, { id: 'asc' }],
+        skip: 5,
+        take: 5,
+      });
+      expect(result).toEqual({
+        pagination: {
+          page: 2,
+          limit: 5,
+          total: 1,
+          totalPages: 1,
+          hasNext: false,
+          hasPrev: true,
+        },
+        logs: [
+          {
+            id: 'log-1',
+            action: ADMIN_LOG_ACTIONS.USER_BLOCKED,
+            admin: { id: ADMIN_ID, nickname: 'Админ' },
+            targetUser: { id: USER_ID, nickname: 'Тест' },
+            details: { blockReason: 'Причина' },
+            createdAt: NOW,
+          },
+        ],
+      });
     });
   });
 

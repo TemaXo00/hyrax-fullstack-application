@@ -1,4 +1,5 @@
 import type {
+  AchievementCondition,
   CosmeticRarity,
   CosmeticSlot,
   UpgradeEffectType,
@@ -126,3 +127,82 @@ export const UPGRADES: Record<'click' | 'auto', UpgradeFixture> = {
 export const ACTIVE_FOODS = [FOODS.carrot, FOODS.apple];
 export const ACTIVE_COSMETICS = [COSMETICS.cap, COSMETICS.background];
 export const ALL_UPGRADES = [UPGRADES.click, UPGRADES.auto];
+
+export interface AchievementFixture {
+  id: string;
+  code: string;
+  title: string;
+  description: string;
+  conditionType: AchievementCondition;
+  conditionValue: number;
+  rewardCoins: number;
+}
+
+export const ACHIEVEMENTS: Record<
+  'clicks' | 'feeds' | 'level' | 'coins' | 'streak',
+  AchievementFixture
+> = {
+  clicks: {
+    id: 'achievement-clicks',
+    code: 'FIRST_CLICKS',
+    title: 'Первые клики',
+    description: 'Сделайте десять кликов',
+    conditionType: 'TOTAL_CLICKS',
+    conditionValue: 10,
+    rewardCoins: 50,
+  },
+  feeds: {
+    id: 'achievement-feeds',
+    code: 'HUNGRY_PET',
+    title: 'Сытный обед',
+    description: 'Покормите питомца пять раз',
+    conditionType: 'TOTAL_FEEDS',
+    conditionValue: 5,
+    rewardCoins: 100,
+  },
+  level: {
+    id: 'achievement-level',
+    code: 'GROWING_UP',
+    title: 'Взросление',
+    description: 'Достигните пятого уровня питомца',
+    conditionType: 'LEVEL',
+    conditionValue: 5,
+    rewardCoins: 200,
+  },
+  coins: {
+    id: 'achievement-coins',
+    code: 'RICH_PLAYER',
+    title: 'Богач',
+    description: 'Заработайте тысячу монет',
+    conditionType: 'TOTAL_COINS_EARNED',
+    conditionValue: 1000,
+    rewardCoins: 300,
+  },
+  streak: {
+    id: 'achievement-streak',
+    code: 'REGULAR_PLAYER',
+    title: 'Постоянный игрок',
+    description: 'Заходите три дня подряд',
+    conditionType: 'STREAK',
+    conditionValue: 3,
+    rewardCoins: 150,
+  },
+};
+
+export const ALL_ACHIEVEMENTS = Object.values(ACHIEVEMENTS);
+
+export interface DailyRewardFixture {
+  dayNumber: number;
+  rewardCoins: number;
+  rewardItemId: string | null;
+}
+
+export const DAILY_REWARDS: DailyRewardFixture[] = [
+  { dayNumber: 1, rewardCoins: 50, rewardItemId: null },
+  { dayNumber: 2, rewardCoins: 75, rewardItemId: null },
+  { dayNumber: 3, rewardCoins: 100, rewardItemId: COSMETICS.cap.id },
+  { dayNumber: 4, rewardCoins: 150, rewardItemId: null },
+  { dayNumber: 5, rewardCoins: 200, rewardItemId: COSMETICS.background.id },
+  { dayNumber: 6, rewardCoins: 250, rewardItemId: null },
+  { dayNumber: 7, rewardCoins: 500, rewardItemId: null },
+];
