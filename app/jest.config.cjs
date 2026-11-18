@@ -25,6 +25,18 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@org/types$': join(rootDir, 'core-libs/types/src/index.ts'),
+    '^@org/achievement-feature$': join(
+      rootDir,
+      'server-libs/achievement-feature/src/index.ts',
+    ),
+    '^@org/daily-reward-feature$': join(
+      rootDir,
+      'server-libs/daily-reward-feature/src/index.ts',
+    ),
+    '^@org/leaderboard-feature$': join(
+      rootDir,
+      'server-libs/leaderboard-feature/src/index.ts',
+    ),
     '^@org/validation-config$': join(
       rootDir,
       'core-libs/validation-config/src/index.ts',

@@ -20,6 +20,7 @@
     "@org/database": "0.0.1",
     "@org/dto": "0.0.1",
     "@org/http-decorators": "0.0.1",
+    "@org/pet-utils": "0.0.1",
     "@org/redis": "0.0.1",
     "@org/types": "0.0.1",
     "@org/validation-config": "0.0.1",

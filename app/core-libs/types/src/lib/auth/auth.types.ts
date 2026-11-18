@@ -28,6 +28,7 @@ export const ADMIN_LOG_ACTIONS = {
   USER_BLOCKED: 'USER_BLOCKED',
   USER_UNBLOCKED: 'USER_UNBLOCKED',
   USER_SESSIONS_REVOKED: 'USER_SESSIONS_REVOKED',
+  USER_ROLE_CHANGED: 'USER_ROLE_CHANGED',
 } as const;
 
 export type AdminLogAction =
@@ -107,6 +108,10 @@ export interface ChangeSessionLocalNameInput {
 export interface BlockUserInput {
   blockReason: string;
   blockedUntil: Date;
+}
+
+export interface UpdateUserRoleInput {
+  role: UserRole;
 }
 
 export interface AuthSessionResult extends AuthTokens {

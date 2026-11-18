@@ -473,6 +473,9 @@ export class PetFeatureService implements PetServiceContract {
   }
 
   private async invalidateMeCache(userId: string): Promise<void> {
-    await this.redis.del(CACHE_KEYS.me(userId));
+    await Promise.all([
+      this.redis.del(CACHE_KEYS.me(userId)),
+      this.redis.delByPrefix(CACHE_KEYS.leaderboardPrefix()),
+    ]);
   }
 }

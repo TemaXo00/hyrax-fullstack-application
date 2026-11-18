@@ -1,0 +1,7 @@
+export const DAILY_REWARD_CONFIG = {
+  CYCLE_DAYS: 7,
+  DAY_MIN: 1,
+  DAY_MAX: 7,
+  REWARD_COINS_MIN: 0,
+  REWARD_COINS_MAX: 2_000_000_000,
+} as const;

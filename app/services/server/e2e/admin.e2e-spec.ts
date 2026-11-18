@@ -99,6 +99,102 @@ describe('Admin REST (e2e)', () => {
     });
   });
 
+  it('меняет роль пользователя, применяет её без повторного входа и журналирует действие', async () => {
+    const adminClient = getContext().client();
+    const playerClient = getContext().client();
+    const admin = await createAdmin(adminClient);
+    const player = getData(await playerClient.register('Игрок')).user;
+
+    await playerClient.me();
+
+    const promote = await adminClient.patch<UserEntity>(
+      `/auth/admin/users/${player.id}/role`,
+      { role: 'ADMIN' },
+    );
+
+    expect(promote.status).toBe(200);
+    expect(getData(promote)).toMatchObject({
+      id: player.id,
+      role: 'ADMIN',
+      roleLabel: 'Администратор',
+    });
+
+    const promotedAccess = await playerClient.query('/auth/admin/users', {
+      search: 'Игрок',
+    });
+
+    expect(promotedAccess.status).toBe(200);
+
+    const demote = await adminClient.patch<UserEntity>(
+      `/auth/admin/users/${player.id}/role`,
+      { role: 'PLAYER' },
+    );
+
+    expect(demote.status).toBe(200);
+    expect(getData(demote)).toMatchObject({
+      id: player.id,
+      role: 'PLAYER',
+      roleLabel: 'Игрок',
+    });
+
+    const denied = await playerClient.query('/auth/admin/users', {});
+
+    expect(denied.status).toBe(403);
+    expect(getErrorMessage(denied)).toBe(AUTH_MESSAGES.ACCESS_DENIED);
+
+    const log = await getContext().db.adminLog.findFirst({
+      where: {
+        adminId: admin.id,
+        targetUserId: player.id,
+        action: ADMIN_LOG_ACTIONS.USER_ROLE_CHANGED,
+      },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    expect(log).not.toBeNull();
+    expect(log?.details).toMatchObject({
+      previousRole: 'PLAYER',
+      role: 'ADMIN',
+    });
+
+    const selfChange = await adminClient.patch(
+      `/auth/admin/users/${admin.id}/role`,
+      { role: 'PLAYER' },
+    );
+
+    expect(selfChange.status).toBe(400);
+    expect(getErrorMessage(selfChange)).toBe(
+      AUTH_ADMIN_MESSAGES.CANNOT_CHANGE_OWN_ROLE,
+    );
+
+    const unchanged = await adminClient.patch(
+      `/auth/admin/users/${player.id}/role`,
+      { role: 'PLAYER' },
+    );
+
+    expect(unchanged.status).toBe(400);
+    expect(getErrorMessage(unchanged)).toBe(
+      AUTH_ADMIN_MESSAGES.USER_ROLE_UNCHANGED,
+    );
+
+    const invalidRole = await adminClient.patch(
+      `/auth/admin/users/${player.id}/role`,
+      { role: 'OWNER' },
+    );
+
+    expect(invalidRole.status).toBe(400);
+    expect(getErrorMessage(invalidRole)).toContain(
+      AUTH_ADMIN_MESSAGES.ROLE_VALIDATION.INVALID,
+    );
+
+    const missing = await adminClient.patch('/auth/admin/users/unknown/role', {
+      role: 'PLAYER',
+    });
+
+    expect(missing.status).toBe(404);
+    expect(getErrorMessage(missing)).toBe(AUTH_ADMIN_MESSAGES.USER_NOT_FOUND);
+  });
+
   it('фильтрует и ищет пользователей', async () => {
     const adminClient = getContext().client();
     const playerClient = getContext().client();
@@ -152,6 +248,8 @@ describe('Admin REST (e2e)', () => {
     const playerClient = getContext().client();
     const admin = await createAdmin(adminClient);
     const player = getData(await playerClient.register('Игрок')).user;
+
+    expect((await playerClient.me()).status).toBe(200);
 
     const blockedUntil = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
@@ -287,6 +385,8 @@ describe('Admin REST (e2e)', () => {
     const playerClient = getContext().client();
     const admin = await createAdmin(adminClient);
     const player = getData(await playerClient.register('Игрок')).user;
+
+    expect((await playerClient.me()).status).toBe(200);
 
     const revoke = await adminClient.delete(
       `/auth/admin/users/${player.id}/sessions`,

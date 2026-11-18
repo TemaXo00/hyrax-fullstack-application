@@ -101,7 +101,10 @@ export class PetAdminFeatureService implements PetAdminServiceContract {
       data,
     });
 
-    await this.redis.del(CACHE_KEYS.me(pet.user.id));
+    await Promise.all([
+      this.redis.del(CACHE_KEYS.me(pet.user.id)),
+      this.redis.delByPrefix(CACHE_KEYS.leaderboardPrefix()),
+    ]);
 
     return await this.getPetById(petId);
   }
@@ -150,7 +153,10 @@ export class PetAdminFeatureService implements PetAdminServiceContract {
       data,
     });
 
-    await this.redis.del(CACHE_KEYS.me(pet.user.id));
+    await Promise.all([
+      this.redis.del(CACHE_KEYS.me(pet.user.id)),
+      this.redis.delByPrefix(CACHE_KEYS.leaderboardPrefix()),
+    ]);
 
     return await this.getPetById(petId);
   }

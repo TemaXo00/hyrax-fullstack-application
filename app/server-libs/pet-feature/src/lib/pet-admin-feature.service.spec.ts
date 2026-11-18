@@ -102,7 +102,7 @@ function setup(): {
     };
     playerStatistic: { update: jest.Mock };
   };
-  redis: { del: jest.Mock };
+  redis: { del: jest.Mock; delByPrefix: jest.Mock };
 } {
   const db = {
     pet: {
@@ -117,6 +117,7 @@ function setup(): {
   };
   const redis = {
     del: jest.fn().mockResolvedValue(undefined),
+    delByPrefix: jest.fn().mockResolvedValue(undefined),
   };
   const service = new PetAdminFeatureService(
     db as unknown as DatabaseService,

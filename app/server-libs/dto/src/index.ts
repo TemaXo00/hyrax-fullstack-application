@@ -5,7 +5,9 @@ export * from './lib/auth/login.dto';
 export * from './lib/auth/change-password.dto';
 export * from './lib/auth/change-session-local-name.dto';
 export * from './lib/auth/user-pagination.dto';
+export * from './lib/auth/admin-log.dto';
 export * from './lib/auth/block-user.dto';
+export * from './lib/auth/update-user-role.dto';
 export * from './lib/auth/auth-response.dto';
 
 export * from './lib/shared/pagination.dto';
@@ -13,7 +15,9 @@ export * from './lib/shared/pagination-response.dto';
 export * from './lib/shared/error-response.dto';
 
 export * from './lib/player/login-streak-response.dto';
+export * from './lib/achievement/achievement.dto';
 export * from './lib/achievement/achievement-response.dto';
+export * from './lib/daily-reward/daily-reward-response.dto';
 
 export * from './lib/pet/rename-pet.dto';
 export * from './lib/pet/feed-pet.dto';
@@ -32,3 +36,6 @@ export * from './lib/cosmetic/cosmetic-admin.dto';
 
 export * from './lib/upgrade/upgrade-response.dto';
 export * from './lib/upgrade/upgrade-admin.dto';
+
+export * from './lib/leaderboard/leaderboard-query.dto';
+export * from './lib/leaderboard/leaderboard-response.dto';

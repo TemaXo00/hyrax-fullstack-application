@@ -96,6 +96,39 @@ describe('Security and API contract (e2e)', () => {
     expect(document.paths['/api/auth/me'].get.security).toEqual([
       { bearer: [] },
     ]);
+    expect(document.paths['/api/auth/password/change'].patch.security).toEqual([
+      { bearer: [] },
+    ]);
+    expect(document.paths['/api/auth/sessions'].get.security).toEqual([
+      { bearer: [] },
+    ]);
+    expect(document.paths['/api/auth/sessions/{id}'].delete.security).toEqual([
+      { bearer: [] },
+    ]);
+    expect(document.paths['/api/achievements'].query.responses).toHaveProperty(
+      '401',
+    );
+    expect(
+      document.paths['/api/achievements/{id}/claim'].post.responses,
+    ).toHaveProperty('409');
+    expect(document.paths['/api/daily-rewards'].query.responses).toHaveProperty(
+      '401',
+    );
+    expect(
+      document.paths['/api/daily-rewards/claim'].post.responses,
+    ).toHaveProperty('409');
+    expect(
+      document.paths['/api/admin/achievements'].query.responses,
+    ).toHaveProperty('403');
+    expect(
+      document.paths['/api/admin/achievements'].post.responses,
+    ).toHaveProperty('403');
+    expect(
+      document.paths['/api/admin/daily-rewards'].get.responses,
+    ).toHaveProperty('403');
+    expect(
+      document.paths['/api/admin/daily-rewards/{dayNumber}'].patch.responses,
+    ).toHaveProperty('403');
     expect(document.paths['/api/pets/walk'].post.responses).toHaveProperty(
       '201',
     );
@@ -115,6 +148,12 @@ describe('Security and API contract (e2e)', () => {
     expect(document.paths['/api/auth/admin/users'].query.security).toEqual([
       { bearer: [] },
     ]);
+    expect(
+      document.paths['/api/auth/admin/users/logs'].query.responses,
+    ).toHaveProperty('403');
+    expect(
+      document.paths['/api/auth/admin/users/{id}/role'].patch.responses,
+    ).toHaveProperty('403');
   });
 
   it('не раскрывает пароли и токены в ответах', async () => {

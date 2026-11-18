@@ -1,3 +1,8 @@
+import type {
+  PaginationInput,
+  PaginationMeta,
+} from '../shared/pagination.types.js';
+
 export const ACHIEVEMENT_CONDITIONS = [
   'TOTAL_CLICKS',
   'TOTAL_FEEDS',
@@ -45,4 +50,75 @@ export interface UserAchievementEntity {
   id: string;
   achievement: AchievementEntity;
   createdAt: Date;
+}
+
+export interface AchievementProgressEntity extends AchievementEntity {
+  progress: number;
+  isUnlocked: boolean;
+  isClaimed: boolean;
+  claimedAt: Date | null;
+}
+
+export interface PaginatedAchievementsOutput {
+  pagination: PaginationMeta;
+  achievements: AchievementProgressEntity[];
+}
+
+export interface PaginatedAchievementCatalogOutput {
+  pagination: PaginationMeta;
+  achievements: AchievementEntity[];
+}
+
+export interface AchievementQueryInput extends PaginationInput {
+  conditionType?: AchievementCondition;
+}
+
+export interface CreateAchievementAdminInput {
+  code: string;
+  title: string;
+  description?: string | null;
+  imageUrl?: string | null;
+  conditionType: AchievementCondition;
+  conditionValue: number;
+  rewardCoins?: number;
+}
+
+export interface UpdateAchievementAdminInput {
+  code?: string;
+  title?: string;
+  description?: string | null;
+  imageUrl?: string | null;
+  conditionType?: AchievementCondition;
+  conditionValue?: number;
+  rewardCoins?: number;
+}
+
+export interface AchievementClaimEntity {
+  achievement: AchievementProgressEntity;
+  rewardCoins: number;
+  coinsBalance: string;
+  totalCoinsEarned: string;
+}
+
+export interface AchievementServiceContract {
+  getAchievements(
+    userId: string,
+    query: AchievementQueryInput,
+  ): Promise<PaginatedAchievementsOutput>;
+  claim(userId: string, achievementId: string): Promise<AchievementClaimEntity>;
+}
+
+export interface AchievementAdminServiceContract {
+  getAchievements(
+    query: AchievementQueryInput,
+  ): Promise<PaginatedAchievementCatalogOutput>;
+  getAchievementById(achievementId: string): Promise<AchievementEntity>;
+  createAchievement(
+    input: CreateAchievementAdminInput,
+  ): Promise<AchievementEntity>;
+  updateAchievement(
+    achievementId: string,
+    input: UpdateAchievementAdminInput,
+  ): Promise<AchievementEntity>;
+  deleteAchievement(achievementId: string): Promise<void>;
 }
