@@ -165,6 +165,54 @@ const DAILY_REWARDS = [
   },
 ] as const;
 
+const ACHIEVEMENTS = [
+  {
+    id: '0194f3f7-6a0a-7c4e-9f1e-7f22f1f5f001',
+    code: 'FIRST_CLICKS',
+    title: 'Первые клики',
+    description: 'Сделайте десять кликов по питомцу',
+    conditionType: 'TOTAL_CLICKS',
+    conditionValue: 10,
+    rewardCoins: 50,
+  },
+  {
+    id: '0194f3f7-6a0a-7c4e-9f1e-7f22f1f5f002',
+    code: 'HUNGRY_PET',
+    title: 'Сытный обед',
+    description: 'Покормите питомца пять раз',
+    conditionType: 'TOTAL_FEEDS',
+    conditionValue: 5,
+    rewardCoins: 100,
+  },
+  {
+    id: '0194f3f7-6a0a-7c4e-9f1e-7f22f1f5f003',
+    code: 'GROWING_UP',
+    title: 'Взросление',
+    description: 'Достигните пятого уровня питомца',
+    conditionType: 'LEVEL',
+    conditionValue: 5,
+    rewardCoins: 200,
+  },
+  {
+    id: '0194f3f7-6a0a-7c4e-9f1e-7f22f1f5f004',
+    code: 'RICH_PLAYER',
+    title: 'Богач',
+    description: 'Заработайте тысячу монет',
+    conditionType: 'TOTAL_COINS_EARNED',
+    conditionValue: 1000,
+    rewardCoins: 300,
+  },
+  {
+    id: '0194f3f7-6a0a-7c4e-9f1e-7f22f1f5f005',
+    code: 'REGULAR_PLAYER',
+    title: 'Постоянный игрок',
+    description: 'Заходите три дня подряд',
+    conditionType: 'STREAK',
+    conditionValue: 3,
+    rewardCoins: 150,
+  },
+] as const;
+
 async function main(): Promise<void> {
   for (const food of FOODS) {
     await prisma.food.upsert({
@@ -187,6 +235,14 @@ async function main(): Promise<void> {
       where: { id: upgrade.id },
       create: upgrade,
       update: upgrade,
+    });
+  }
+
+  for (const achievement of ACHIEVEMENTS) {
+    await prisma.achievment.upsert({
+      where: { id: achievement.id },
+      create: achievement,
+      update: achievement,
     });
   }
 
