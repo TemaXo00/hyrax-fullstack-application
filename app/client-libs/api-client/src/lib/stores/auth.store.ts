@@ -2,7 +2,11 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 import * as authApi from '../auth.api';
-import { getApiErrorMessage, setAccessToken } from '../http';
+import {
+  getApiErrorMessage,
+  restoreAccessToken,
+  setAccessToken,
+} from '../http';
 
 import type { Me } from '../auth.api';
 import type { LoginInput, RegisterInput } from '@org/types';
@@ -17,6 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => user.value !== null);
   const nickname = computed(() => user.value?.nickname ?? '');
+  const isAdmin = computed(() => user.value?.role === 'ADMIN');
   const coins = computed(() => Number(user.value?.stats?.coins ?? 0));
 
   function clearSession(): void {
@@ -69,9 +74,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function restore(): Promise<void> {
     try {
-      const result = await authApi.refresh();
+      const token = await restoreAccessToken();
 
-      setAccessToken(result.accessToken);
+      if (!token) {
+        clearSession();
+
+        return;
+      }
+
       await fetchMe();
     } catch {
       clearSession();
@@ -115,6 +125,7 @@ export const useAuthStore = defineStore('auth', () => {
     loading,
     error,
     isAuthenticated,
+    isAdmin,
     nickname,
     coins,
     login,

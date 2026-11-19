@@ -3,44 +3,34 @@ import { AUTH_ROUTES } from '@org/types';
 import { request } from './http';
 
 import type { Serialized } from './types';
-import type { LoginInput, MeEntity, RegisterInput, AuthResponse } from '@org/types';
+import type { AuthResponse, LoginInput, MeEntity, RegisterInput } from '@org/types';
 
 export type AuthResult = Serialized<AuthResponse>;
 export type Me = Serialized<MeEntity>;
 
 export async function register(input: RegisterInput): Promise<AuthResult> {
-  return await request<AuthResult>({
-    url: `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.REGISTER}`,
+  return await request<AuthResult>(`/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.REGISTER}`, {
     method: 'POST',
-    data: input,
+    body: input,
+    retryOnUnauthorized: false,
   });
 }
 
 export async function login(input: LoginInput): Promise<AuthResult> {
-  return await request<AuthResult>({
-    url: `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.LOGIN}`,
+  return await request<AuthResult>(`/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.LOGIN}`, {
     method: 'POST',
-    data: input,
-  });
-}
-
-export async function refresh(): Promise<AuthResult> {
-  return await request<AuthResult>({
-    url: `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.REFRESH}`,
-    method: 'POST',
+    body: input,
+    retryOnUnauthorized: false,
   });
 }
 
 export async function logout(): Promise<void> {
-  await request<void>({
-    url: `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.LOGOUT}`,
+  await request<void>(`/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.LOGOUT}`, {
     method: 'POST',
+    retryOnUnauthorized: false,
   });
 }
 
 export async function getMe(): Promise<Me> {
-  return await request<Me>({
-    url: `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.ME}`,
-    method: 'GET',
-  });
+  return await request<Me>(`/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.ME}`);
 }

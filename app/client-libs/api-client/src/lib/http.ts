@@ -1,41 +1,30 @@
 import { AUTH_ROUTES } from '@org/types';
-import axios from 'axios';
+import { FetchError, ofetch } from 'ofetch';
 
+import type { FetchOptions } from 'ofetch';
 import type { ApiEnvelope, ApiErrorEnvelope } from './types';
-import type {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  InternalAxiosRequestConfig,
-} from 'axios';
-
 
 const API_BASE_URL = '/api';
+
+const REFRESH_PATH = `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.REFRESH}`;
 
 let accessToken: string | null = null;
 let onUnauthorized: (() => void) | null = null;
 let refreshPromise: Promise<string | null> | null = null;
 
-type RetryableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
+export interface RequestOptions {
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'QUERY';
+  body?: unknown;
+  query?: Record<string, unknown>;
+  headers?: Record<string, string>;
+  retryOnUnauthorized?: boolean;
+}
 
-const refreshClient = axios.create({
+const transport = ofetch.create({
   baseURL: API_BASE_URL,
-  withCredentials: true,
+  credentials: 'include',
   headers: { 'Content-Type': 'application/json' },
 });
-
-export const http: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' },
-});
-
-const REFRESH_URL = `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.REFRESH}`;
-const PUBLIC_AUTH_URLS = [
-  REFRESH_URL,
-  `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.LOGIN}`,
-  `/${AUTH_ROUTES.BASE}/${AUTH_ROUTES.REGISTER}`,
-];
 
 export function getAccessToken(): string | null {
   return accessToken;
@@ -49,16 +38,40 @@ export function setUnauthorizedHandler(handler: (() => void) | null): void {
   onUnauthorized = handler;
 }
 
-function isPublicAuthUrl(url?: string): boolean {
-  return Boolean(url && PUBLIC_AUTH_URLS.some((publicUrl) => url.endsWith(publicUrl)));
+function isUnauthorized(error: unknown): boolean {
+  return error instanceof FetchError && error.response?.status === 401;
 }
 
-async function refreshAccessToken(): Promise<string | null> {
+async function performRequest<T>(
+  path: string,
+  options: RequestOptions,
+): Promise<T> {
+  const headers: Record<string, string> = { ...options.headers };
+
+  if (accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  const fetchOptions: FetchOptions<'json'> = {
+    method: (options.method ?? 'GET') as FetchOptions['method'],
+    body: options.body as FetchOptions['body'],
+    query: options.query as FetchOptions['query'],
+    headers,
+  };
+
+  const response = await transport<ApiEnvelope<T>>(path, fetchOptions);
+
+  return response.data;
+}
+
+async function refreshAccessToken(notify = true): Promise<string | null> {
   if (!refreshPromise) {
-    refreshPromise = refreshClient
-      .post<ApiEnvelope<{ accessToken: string }>>(REFRESH_URL)
+    refreshPromise = transport<ApiEnvelope<{ accessToken: string }>>(
+      REFRESH_PATH,
+      { method: 'POST' },
+    )
       .then((response) => {
-        const token = response.data.data.accessToken;
+        const token = response.data.accessToken;
 
         setAccessToken(token);
 
@@ -66,7 +79,10 @@ async function refreshAccessToken(): Promise<string | null> {
       })
       .catch(() => {
         setAccessToken(null);
-        onUnauthorized?.();
+
+        if (notify) {
+          onUnauthorized?.();
+        }
 
         return null;
       })
@@ -78,58 +94,51 @@ async function refreshAccessToken(): Promise<string | null> {
   return await refreshPromise;
 }
 
-http.interceptors.request.use((config) => {
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+/**
+ * Публичное обновление токена для восстановления сессии при загрузке
+ * приложения. Возвращает access-токен или null, если cookie недействительна.
+ */
+export function restoreAccessToken(): Promise<string | null> {
+  return refreshAccessToken(false);
+}
+
+export async function request<T>(
+  path: string,
+  options: RequestOptions = {},
+): Promise<T> {
+  try {
+    return await performRequest<T>(path, options);
+  } catch (error) {
+    if (isUnauthorized(error) && options.retryOnUnauthorized !== false) {
+      const token = await refreshAccessToken();
+
+      if (token) {
+        return await performRequest<T>(path, options);
+      }
+    }
+
+    throw error;
   }
-
-  return config;
-});
-
-http.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError) => {
-    const config = error.config as RetryableConfig | undefined;
-    const isUnauthorized = error.response?.status === 401;
-
-    if (
-      !config ||
-      !isUnauthorized ||
-      config._retry ||
-      isPublicAuthUrl(config.url)
-    ) {
-      return await Promise.reject(error);
-    }
-
-    config._retry = true;
-
-    const token = await refreshAccessToken();
-
-    if (!token) {
-      return await Promise.reject(error);
-    }
-
-    config.headers.Authorization = `Bearer ${token}`;
-
-    return await http.request(config);
-  },
-);
-
-export async function request<T>(config: AxiosRequestConfig): Promise<T> {
-  const response = await http.request<ApiEnvelope<T>>(config);
-
-  return response.data.data;
 }
 
 export function getApiErrorMessage(error: unknown): string {
-  if (axios.isAxiosError<ApiErrorEnvelope>(error)) {
-    const responseMessage = error.response?.data?.message;
+  if (error instanceof FetchError) {
+    const data = error.data as ApiErrorEnvelope | { message?: string | string[] } | undefined;
+    const message = data?.message;
 
-    if (responseMessage) {
-      return responseMessage;
+    if (Array.isArray(message)) {
+      return message.join(', ');
     }
 
-    if (error.code === 'ERR_NETWORK') {
+    if (message) {
+      return message;
+    }
+
+    if (error.response?.status === 429) {
+      return 'Слишком часто. Дайте питомцу немного отдохнуть.';
+    }
+
+    if (!error.response) {
       return 'Не удалось связаться с сервером. Проверьте, запущен ли API.';
     }
 
