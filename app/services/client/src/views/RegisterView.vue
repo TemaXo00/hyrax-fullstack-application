@@ -1,50 +1,51 @@
 <script setup lang="ts">
-import { useAuthStore } from '@org/api-client';
 import { onMounted, reactive, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
+import { useAuthStore } from '@org/api-client';
+import AppButton from '../components/ui/AppButton.vue';
+import AuthLayout from '../layouts/AuthLayout.vue';
 
 const auth = useAuthStore();
 const router = useRouter();
-
-onMounted(() => auth.clearError());
 
 const form = reactive({
   nickname: '',
   password: '',
   passwordConfirmation: '',
 });
-
 const validationError = ref<string | null>(null);
+
+onMounted(() => auth.clearError());
 
 function validate(): string | null {
   const nickname = form.nickname.trim();
 
   if (nickname.length < 3) {
-    return 'Никнейм должен быть не короче 3 символов';
+    return 'Никнейм должен быть не короче 3 символов.';
   }
 
   if (nickname.length > 70) {
-    return 'Никнейм должен быть не длиннее 70 символов';
+    return 'Никнейм должен быть не длиннее 70 символов.';
   }
 
   if (form.password.length < 8) {
-    return 'Пароль должен быть не короче 8 символов';
+    return 'Пароль должен быть не короче 8 символов.';
   }
 
   if (!/[a-z]/.test(form.password)) {
-    return 'Пароль должен содержать строчную букву';
+    return 'Пароль должен содержать строчную букву.';
   }
 
   if (!/[A-Z]/.test(form.password)) {
-    return 'Пароль должен содержать заглавную букву';
+    return 'Пароль должен содержать заглавную букву.';
   }
 
   if (!/\d/.test(form.password)) {
-    return 'Пароль должен содержать цифру';
+    return 'Пароль должен содержать цифру.';
   }
 
   if (form.password !== form.passwordConfirmation) {
-    return 'Пароли не совпадают';
+    return 'Пароли не совпадают.';
   }
 
   return null;
@@ -63,7 +64,6 @@ async function submit(): Promise<void> {
       password: form.password,
       passwordConfirmation: form.passwordConfirmation,
     });
-
     await router.push('/');
   } catch {
     // Текст ошибки уже сохранён в auth.error.
@@ -72,86 +72,76 @@ async function submit(): Promise<void> {
 </script>
 
 <template>
-  <div class="mx-auto flex w-full max-w-md flex-col px-4 py-12">
-    <div class="rounded-3xl border border-white/70 bg-white/85 p-6 shadow-sm shadow-slate-200/70 sm:p-8">
-      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">
-        Hyrax
-      </p>
-      <h1 class="mt-2 text-2xl font-bold text-slate-900">
-        Создать аккаунт
-      </h1>
-      <p class="mt-2 text-sm text-slate-500">
-        После регистрации у вас появится собственный питомец и стартовые монеты.
-      </p>
+  <AuthLayout
+    title="Новый питомец"
+    subtitle="Создайте аккаунт — и познакомьтесь с даманом."
+  >
+    <form
+      class="space-y-4"
+      @submit.prevent="submit"
+    >
+      <label class="block">
+        <span class="field-label">Никнейм</span>
+        <input
+          v-model="form.nickname"
+          type="text"
+          autocomplete="username"
+          maxlength="70"
+          class="field-input mt-1.5"
+          placeholder="joe_doe"
+        >
+      </label>
 
-      <form
-        class="mt-6 space-y-4"
-        @submit.prevent="submit()"
+      <label class="block">
+        <span class="field-label">Пароль</span>
+        <input
+          v-model="form.password"
+          type="password"
+          autocomplete="new-password"
+          class="field-input mt-1.5"
+          placeholder="••••••••"
+        >
+        <span class="mt-1.5 block text-[11px] leading-relaxed text-muted">
+          Минимум 8 символов, строчная и заглавная буквы, цифра.
+        </span>
+      </label>
+
+      <label class="block">
+        <span class="field-label">Повторите пароль</span>
+        <input
+          v-model="form.passwordConfirmation"
+          type="password"
+          autocomplete="new-password"
+          class="field-input mt-1.5"
+          placeholder="••••••••"
+        >
+      </label>
+
+      <p
+        v-if="validationError || auth.error"
+        class="rounded-2xl border border-clay/30 bg-[#f9e4df] px-3.5 py-2.5 text-xs font-medium text-[#7a3d31]"
       >
-        <label class="block text-sm font-medium text-slate-700">
-          Никнейм
-          <input
-            v-model="form.nickname"
-            type="text"
-            autocomplete="username"
-            maxlength="70"
-            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-300 focus:ring focus:ring-emerald-100"
-            placeholder="joe_doe"
-          >
-        </label>
-
-        <label class="block text-sm font-medium text-slate-700">
-          Пароль
-          <input
-            v-model="form.password"
-            type="password"
-            autocomplete="new-password"
-            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-300 focus:ring focus:ring-emerald-100"
-            placeholder="••••••••"
-          >
-          <span class="mt-1 block text-xs font-normal text-slate-400">
-            Минимум 8 символов, строчная и заглавная буквы, цифра.
-          </span>
-        </label>
-
-        <label class="block text-sm font-medium text-slate-700">
-          Повторите пароль
-          <input
-            v-model="form.passwordConfirmation"
-            type="password"
-            autocomplete="new-password"
-            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-300 focus:ring focus:ring-emerald-100"
-            placeholder="••••••••"
-          >
-        </label>
-
-        <p
-          v-if="validationError || auth.error"
-          class="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700"
-        >
-          {{ validationError || auth.error }}
-        </p>
-
-        <button
-          type="submit"
-          class="w-full rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm shadow-emerald-200 transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-          :disabled="auth.loading"
-        >
-          {{ auth.loading ? 'Создаём…' : 'Зарегистрироваться' }}
-        </button>
-      </form>
-
-      <p class="mt-6 text-center text-sm text-slate-500">
-        Уже есть аккаунт?
-        <RouterLink
-          to="/login"
-          class="font-semibold text-emerald-700 hover:underline"
-        >
-          Войти
-        </RouterLink>
+        {{ validationError || auth.error }}
       </p>
-    </div>
-  </div>
-</template>
 
-<style scoped></style>
+      <AppButton
+        type="submit"
+        block
+        size="lg"
+        :loading="auth.loading"
+      >
+        Создать аккаунт
+      </AppButton>
+    </form>
+
+    <p class="mt-5 text-center text-xs text-muted">
+      Уже есть аккаунт?
+      <RouterLink
+        to="/login"
+        class="font-bold text-moss-dark hover:underline"
+      >
+        Войти
+      </RouterLink>
+    </p>
+  </AuthLayout>
+</template>

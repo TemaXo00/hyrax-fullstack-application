@@ -7,10 +7,37 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'HomePage',
-      component: (): Promise<Component> =>
-        import('@org/home-page').then((m) => m.HomePage),
+      component: (): Promise<Component> => import('./layouts/AppShell.vue'),
       meta: { requiresAuth: true },
+      children: [
+        {
+          path: '',
+          name: 'Game',
+          component: (): Promise<Component> => import('./pages/GamePage.vue'),
+        },
+        {
+          path: 'shop',
+          name: 'Shop',
+          component: (): Promise<Component> => import('./pages/ShopPage.vue'),
+        },
+        {
+          path: 'achievements',
+          name: 'Achievements',
+          component: (): Promise<Component> =>
+            import('./pages/AchievementsPage.vue'),
+        },
+        {
+          path: 'leaderboard',
+          name: 'Leaderboard',
+          component: (): Promise<Component> =>
+            import('./pages/LeaderboardPage.vue'),
+        },
+        {
+          path: 'profile',
+          name: 'Profile',
+          component: (): Promise<Component> => import('./pages/ProfilePage.vue'),
+        },
+      ],
     },
     {
       path: '/login',
@@ -25,10 +52,8 @@ const router = createRouter({
       meta: { guestOnly: true },
     },
     {
-      path: '/about',
-      name: 'AboutPage',
-      component: (): Promise<Component> =>
-        import('@org/about-page').then((m) => m.AboutPage),
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
     },
   ],
 });
@@ -39,14 +64,11 @@ router.beforeEach(async (to) => {
   await auth.ensureInitialized();
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return {
-      name: 'Login',
-      query: { redirect: to.fullPath },
-    };
+    return { name: 'Login', query: { redirect: to.fullPath } };
   }
 
   if (to.meta.guestOnly && auth.isAuthenticated) {
-    return { name: 'HomePage' };
+    return { name: 'Game' };
   }
 
   return true;

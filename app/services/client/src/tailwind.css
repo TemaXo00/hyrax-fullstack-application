@@ -1,2 +1,80 @@
 @import 'tailwindcss';
 @source "../../../client-libs";
+@source "./**/*.{vue,ts}";
+
+@theme {
+  --color-cream: #f3ead9;
+  --color-paper: #fbf7ef;
+  --color-sand: #e6d3b6;
+  --color-ink: #3d3a33;
+  --color-muted: #8b8174;
+  --color-moss: #7f9b68;
+  --color-moss-dark: #5e794c;
+  --color-clay: #c98b79;
+  --color-butter: #f2cc63;
+  --color-lilac: #cfc7e6;
+
+  --font-sans: 'Nunito', 'Avenir Next', ui-rounded, 'Segoe UI', system-ui,
+    -apple-system, sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    color: var(--color-ink);
+    background-color: var(--color-cream);
+    background-image: radial-gradient(
+      rgba(61, 58, 51, 0.035) 1px,
+      transparent 1px
+    );
+    background-size: 18px 18px;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: #f2cc63;
+    color: #3d3a33;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-moss);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .field-label {
+    @apply block text-[11px] font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .field-input {
+    @apply w-full rounded-2xl border border-ink/20 bg-cream/70 px-4 py-3 text-sm font-medium text-ink outline-none transition placeholder:text-muted/50 focus:border-moss focus:bg-paper;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}

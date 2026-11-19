@@ -1,8 +1,13 @@
 import './tailwind.css';
 import {
   setUnauthorizedHandler,
+  useAchievementsStore,
   useAuthStore,
-  useGameStore,
+  useDailyRewardStore,
+  useLeaderboardStore,
+  usePetStore,
+  useShopStore,
+  useUiStore,
 } from '@org/api-client';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
@@ -17,11 +22,15 @@ app.use(pinia);
 app.use(router);
 
 const auth = useAuthStore(pinia);
-const game = useGameStore(pinia);
 
 setUnauthorizedHandler(() => {
   auth.clearSession();
-  game.reset();
+  usePetStore(pinia).reset();
+  useShopStore(pinia).reset();
+  useAchievementsStore(pinia).reset();
+  useDailyRewardStore(pinia).reset();
+  useLeaderboardStore(pinia).reset();
+  useUiStore(pinia).clear();
 
   const currentRoute = router.currentRoute.value;
 
