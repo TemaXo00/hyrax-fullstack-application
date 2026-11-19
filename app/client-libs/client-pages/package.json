@@ -8,6 +8,12 @@
   "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
+    "./toast": {
+      "@org/source": "./src/lib/components/ToastHost.vue",
+      "types": "./dist/lib/components/ToastHost.vue.d.ts",
+      "import": "./dist/lib/components/ToastHost.vue.js",
+      "default": "./dist/lib/components/ToastHost.vue.js"
+    },
     ".": {
       "@org/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
