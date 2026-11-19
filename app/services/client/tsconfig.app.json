@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
     "rootDir": "src",
     "jsx": "preserve",
@@ -24,12 +25,6 @@
   ],
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.vue"],
   "references": [
-    {
-      "path": "../../client-libs/about-page/tsconfig.lib.json"
-    },
-    {
-      "path": "../../client-libs/home-page/tsconfig.lib.json"
-    },
     {
       "path": "../../client-libs/api-client/tsconfig.lib.json"
     }

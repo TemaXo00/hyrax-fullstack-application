@@ -40,12 +40,6 @@
       "path": "./server-libs/dto"
     },
     {
-      "path": "./client-libs/home-page"
-    },
-    {
-      "path": "./client-libs/about-page"
-    },
-    {
       "path": "./client-libs/api-client"
     },
     {
