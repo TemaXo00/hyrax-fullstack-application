@@ -14,7 +14,7 @@
       "cache": true,
       "options": {
         "cwd": "client-libs/client-ui",
-        "command": "vue-tsc -b tsconfig.lib.json"
+        "command": "vue-tsc -b tsconfig.json"
       }
     }
   }

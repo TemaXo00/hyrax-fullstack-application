@@ -219,9 +219,11 @@ function board(overrides: Record<string, unknown> = {}) {
 const position = {
   isRanked: true,
   rank: 4,
+  metric: 'TOTAL_CLICKS' as const,
   metricLabel: 'Всего кликов',
-  value: 40,
-} as never;
+  value: '40',
+  total: 100,
+};
 
 describe('LeaderboardList', () => {
   it('shows skeletons while loading without a board', () => {

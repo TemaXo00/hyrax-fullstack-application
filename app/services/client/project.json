@@ -14,7 +14,7 @@
       "cache": true,
       "options": {
         "cwd": "services/client",
-        "command": "vue-tsc -p tsconfig.app.json --noEmit"
+        "command": "vue-tsc -b tsconfig.json"
       }
     }
   }

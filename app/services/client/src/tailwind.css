@@ -14,8 +14,9 @@
   --color-butter: #f2cc63;
   --color-lilac: #cfc7e6;
 
-  --font-sans: 'Nunito', 'Avenir Next', ui-rounded, 'Segoe UI', system-ui,
-    -apple-system, sans-serif;
+  --font-sans:
+    'Nunito', 'Avenir Next', ui-rounded, 'Segoe UI', system-ui, -apple-system,
+    sans-serif;
 }
 
 @layer base {

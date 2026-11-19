@@ -248,7 +248,7 @@ describe('ProgressBar', () => {
     });
 
     expect(wrapper.get('.h-full').attributes('style')).toContain('width: 0%');
-    expect(wrapper.get('.h-2').exists()).toBe(true);
+    expect(wrapper.find('.h-2').exists()).toBe(true);
   });
 });
 

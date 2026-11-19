@@ -23,5 +23,6 @@
     "**/*.e2e-spec.ts",
     "services/server/e2e/**/*.ts",
     "services/server/e2e/**/*.mjs"
-  ]
+  ],
+  "exclude": ["client-libs/**", "services/client/**", "vitest.setup.ts"]
 }
