@@ -1,0 +1,21 @@
+{
+  "name": "@org/client-progress",
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-progress",
+        "command": "vitest run"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-progress",
+        "command": "vue-tsc -b tsconfig.lib.json"
+      }
+    }
+  }
+}

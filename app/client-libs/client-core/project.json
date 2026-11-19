@@ -1,0 +1,13 @@
+{
+  "name": "@org/client-core",
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-core",
+        "command": "vitest run"
+      }
+    }
+  }
+}

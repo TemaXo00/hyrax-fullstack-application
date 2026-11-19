@@ -1,5 +1,5 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
 
@@ -12,6 +12,14 @@ export default defineConfig(() => ({
       tsconfigPath: path.join(import.meta.dirname, 'tsconfig.lib.json'),
     }),
   ],
+  resolve: {
+    conditions: ['@org/source'],
+  },
+  test: {
+    environment: 'jsdom',
+    include: ['src/**/*.spec.ts'],
+    setupFiles: ['../../vitest.setup.ts'],
+  },
   build: {
     outDir: './dist',
     emptyOutDir: true,
@@ -26,7 +34,7 @@ export default defineConfig(() => ({
       formats: ['es' as const],
     },
     rolldownOptions: {
-      external: ['vue', 'pinia', 'axios', '@org/types'],
+      external: ['vue', 'pinia', 'ofetch', '@org/client-core', '@org/types'],
     },
   },
 }));

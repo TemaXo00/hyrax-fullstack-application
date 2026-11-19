@@ -1,0 +1,21 @@
+{
+  "name": "@org/client-shop",
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-shop",
+        "command": "vitest run"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-shop",
+        "command": "vue-tsc -b tsconfig.lib.json"
+      }
+    }
+  }
+}

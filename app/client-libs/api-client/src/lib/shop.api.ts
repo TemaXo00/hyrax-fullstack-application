@@ -81,9 +81,7 @@ export async function getUpgrades(
   });
 }
 
-export async function buyUpgrade(
-  upgradeId: string,
-): Promise<UpgradePurchase> {
+export async function buyUpgrade(upgradeId: string): Promise<UpgradePurchase> {
   return await request<UpgradePurchase>(
     `/${UPGRADE_SHOP_ROUTES.BASE}/${upgradeId}/buy`,
     { method: 'POST' },

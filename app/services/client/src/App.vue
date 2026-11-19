@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ToastHost } from '@org/client-pages';
 import { RouterView } from 'vue-router';
-import ToastHost from './components/ui/ToastHost.vue';
 </script>
 
 <template>

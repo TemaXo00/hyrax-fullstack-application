@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@org/api-client": "0.0.1"
+    "@org/api-client": "0.0.1",
+    "@org/client-pages": "0.0.1"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "@org/client-pages",
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-pages",
+        "command": "vitest run"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-pages",
+        "command": "vue-tsc -b tsconfig.lib.json"
+      }
+    }
+  }
+}

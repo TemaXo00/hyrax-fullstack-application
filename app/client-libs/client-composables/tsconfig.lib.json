@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "rootDir": "src",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"],
+  "references": [
+    {
+      "path": "../api-client/tsconfig.lib.json"
+    }
+  ],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts", "eslint.config.mjs"]
+}

@@ -14,12 +14,15 @@ import {
 import { usePetStore } from './pet.store';
 import { useUiStore } from './ui.store';
 
-import type { PaginationMeta } from '@org/types';
 import type { Cosmetic, Food, UpgradeShop } from '../shop.types';
+import type { PaginationMeta } from '@org/types';
 
 const PAGE_LIMIT = 12;
 
-function buildQuery(page: number, search: string): {
+function buildQuery(
+  page: number,
+  search: string,
+): {
   page: number;
   limit: number;
   search?: string;
@@ -61,7 +64,9 @@ export const useShopStore = defineStore('shop', () => {
     foodLoading.value = true;
 
     try {
-      const result = await getFoods(buildQuery(foodPage.value, foodSearch.value));
+      const result = await getFoods(
+        buildQuery(foodPage.value, foodSearch.value),
+      );
 
       foods.value = result.foods;
       foodPagination.value = result.pagination;

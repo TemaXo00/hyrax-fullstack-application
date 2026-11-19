@@ -1,0 +1,13 @@
+{
+  "name": "@org/api-client",
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/api-client",
+        "command": "vitest run"
+      }
+    }
+  }
+}

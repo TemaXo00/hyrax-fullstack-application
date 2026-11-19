@@ -1,0 +1,21 @@
+{
+  "name": "@org/client",
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "services/client",
+        "command": "vitest run"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "services/client",
+        "command": "vue-tsc -p tsconfig.app.json --noEmit"
+      }
+    }
+  }
+}

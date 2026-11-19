@@ -2,10 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 import { getApiErrorMessage } from '../http';
-import {
-  getLeaderboard,
-  getMyLeaderboardPosition,
-} from '../leaderboard.api';
+import { getLeaderboard, getMyLeaderboardPosition } from '../leaderboard.api';
 import { useUiStore } from './ui.store';
 
 import type {
@@ -19,7 +16,11 @@ export const LEADERBOARD_METRICS: Array<{
   label: string;
   short: string;
 }> = [
-  { value: 'TOTAL_COINS_EARNED', label: 'Всего заработано монет', short: 'Монеты' },
+  {
+    value: 'TOTAL_COINS_EARNED',
+    label: 'Всего заработано монет',
+    short: 'Монеты',
+  },
   { value: 'TOTAL_CLICKS', label: 'Всего кликов', short: 'Клики' },
   { value: 'PET_LEVEL', label: 'Уровень питомца', short: 'Уровень' },
   { value: 'STREAK', label: 'Серия входов', short: 'Серия' },

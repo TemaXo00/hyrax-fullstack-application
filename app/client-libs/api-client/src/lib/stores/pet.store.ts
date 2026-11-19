@@ -1,20 +1,14 @@
-import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
-
-import { getApiErrorMessage } from '../http';
-import {
-  clickPet,
-  feedPet,
-  getPetState,
-  renamePet,
-  walkPet,
-} from '../pet.api';
 import {
   readStoredNumber,
   readStoredString,
   writeStoredNumber,
   writeStoredString,
-} from '../storage';
+} from '@org/client-core';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+
+import { getApiErrorMessage } from '../http';
+import { clickPet, feedPet, getPetState, renamePet, walkPet } from '../pet.api';
 import { useUiStore } from './ui.store';
 
 import type { PetActionResult, PetState } from '../pet.api';
@@ -88,11 +82,16 @@ export const usePetStore = defineStore('pet', () => {
   const isBusy = computed(() => busyAction.value !== null);
 
   const xpPercent = computed(() =>
-    Math.min(100, Math.max(0, (xp.value / Math.max(1, xpToNextLevel.value)) * 100)),
+    Math.min(
+      100,
+      Math.max(0, (xp.value / Math.max(1, xpToNextLevel.value)) * 100),
+    ),
   );
 
   const moodPercent = computed(() => Math.min(100, Math.max(0, mood.value)));
-  const hungerPercent = computed(() => Math.min(100, Math.max(0, hunger.value)));
+  const hungerPercent = computed(() =>
+    Math.min(100, Math.max(0, hunger.value)),
+  );
 
   const moodMultiplier = computed(() => 0.5 + 0.5 * (moodPercent.value / 100));
   const clickReward = computed(() =>
@@ -139,7 +138,9 @@ export const usePetStore = defineStore('pet', () => {
   }
 
   function clickLimitLeft(now = Date.now()): number {
-    const recent = clickTimes.value.filter((time) => now - time < CLICK_WINDOW_MS);
+    const recent = clickTimes.value.filter(
+      (time) => now - time < CLICK_WINDOW_MS,
+    );
 
     return Math.max(0, CLICK_WINDOW_LIMIT - recent.length);
   }
@@ -212,9 +213,7 @@ export const usePetStore = defineStore('pet', () => {
     }
 
     if (remainingWalkCooldown() > 0) {
-      useUiStore().fail(
-        `Питомец ещё отдыхает: ${remainingWalkCooldown()} с.`,
-      );
+      useUiStore().fail(`Питомец ещё отдыхает: ${remainingWalkCooldown()} с.`);
 
       return;
     }

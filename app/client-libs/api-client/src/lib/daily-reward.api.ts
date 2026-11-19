@@ -3,7 +3,10 @@ import { DAILY_REWARD_ROUTES } from '@org/types';
 import { request } from './http';
 
 import type { Serialized } from './types';
-import type { DailyRewardClaimEntity, DailyRewardStateEntity } from '@org/types';
+import type {
+  DailyRewardClaimEntity,
+  DailyRewardStateEntity,
+} from '@org/types';
 
 export type DailyRewardState = Serialized<DailyRewardStateEntity>;
 export type DailyRewardClaim = Serialized<DailyRewardClaimEntity>;

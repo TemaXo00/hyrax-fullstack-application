@@ -1,0 +1,13 @@
+{
+  "name": "@org/client-composables",
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "client-libs/client-composables",
+        "command": "vitest run"
+      }
+    }
+  }
+}

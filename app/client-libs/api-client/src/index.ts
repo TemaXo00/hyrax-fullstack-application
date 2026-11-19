@@ -1,7 +1,5 @@
 export * from './lib/types';
 export * from './lib/http';
-export * from './lib/format';
-export * from './lib/storage';
 
 export * from './lib/auth.api';
 export * from './lib/pet.api';

@@ -1,8 +1,8 @@
 import { AUTH_ROUTES } from '@org/types';
 import { FetchError, ofetch } from 'ofetch';
 
-import type { FetchOptions } from 'ofetch';
 import type { ApiEnvelope, ApiErrorEnvelope } from './types';
+import type { FetchOptions } from 'ofetch';
 
 const API_BASE_URL = '/api';
 
@@ -42,19 +42,40 @@ function isUnauthorized(error: unknown): boolean {
   return error instanceof FetchError && error.response?.status === 401;
 }
 
+/**
+ * ofetch сериализует тело только для GET/HEAD/POST/PUT/PATCH/DELETE.
+ * Для метода QUERY тело нужно подготовить вручную, иначе fetch отправит
+ * строку "[object Object]" и сервер ответит ошибкой разбора JSON.
+ */
+function serializeBody(
+  method: RequestOptions['method'],
+  body: unknown,
+): FetchOptions['body'] {
+  if (body === undefined || body === null) {
+    return undefined;
+  }
+
+  if (method === 'QUERY' && typeof body !== 'string') {
+    return JSON.stringify(body);
+  }
+
+  return body as FetchOptions['body'];
+}
+
 async function performRequest<T>(
   path: string,
   options: RequestOptions,
 ): Promise<T> {
   const headers: Record<string, string> = { ...options.headers };
+  const method = options.method ?? 'GET';
 
   if (accessToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }
 
   const fetchOptions: FetchOptions<'json'> = {
-    method: (options.method ?? 'GET') as FetchOptions['method'],
-    body: options.body as FetchOptions['body'],
+    method: method as FetchOptions['method'],
+    body: serializeBody(method, options.body),
     query: options.query as FetchOptions['query'],
     headers,
   };
@@ -123,7 +144,8 @@ export async function request<T>(
 
 export function getApiErrorMessage(error: unknown): string {
   if (error instanceof FetchError) {
-    const data = error.data as ApiErrorEnvelope | { message?: string | string[] } | undefined;
+    const data = error.data as
+      ApiErrorEnvelope | { message?: string | string[] } | undefined;
     const message = data?.message;
 
     if (Array.isArray(message)) {

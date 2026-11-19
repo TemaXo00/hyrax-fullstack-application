@@ -43,6 +43,27 @@
       "path": "./client-libs/api-client"
     },
     {
+      "path": "./client-libs/client-core"
+    },
+    {
+      "path": "./client-libs/client-ui"
+    },
+    {
+      "path": "./client-libs/client-pet"
+    },
+    {
+      "path": "./client-libs/client-shop"
+    },
+    {
+      "path": "./client-libs/client-progress"
+    },
+    {
+      "path": "./client-libs/client-composables"
+    },
+    {
+      "path": "./client-libs/client-pages"
+    },
+    {
       "path": "./server-libs/nest-launcher"
     },
     {
