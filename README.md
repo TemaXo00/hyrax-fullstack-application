@@ -86,16 +86,43 @@ Vite проксирует `/api` на `http://localhost:3000`, поэтому к
 
 ### Структура клиента
 
-- `app/client-libs/api-client/src/lib/http.ts` — транспорт на `ofetch`,
-  подстановка access-токена, обновление пары токенов по refresh-cookie и
-  обработка ошибок API.
-- `app/client-libs/api-client/src/lib/*.api.ts` — модули запросов по доменам
-  (авторизация, питомец, магазин, достижения, ежедневные награды, рейтинг).
-- `app/client-libs/api-client/src/lib/stores` — Pinia-стоки с состоянием игры,
-  инвентарём и каталогами.
-- `app/services/client/src/composables` — обёртки над сторами для компонентов.
-- `app/services/client/src/components` — атомарные компоненты интерфейса.
-- `app/services/client/src/pages` — экраны приложения.
+Приложение `services/client` остаётся тонким: в нём только `App.vue`, `main.ts`,
+`router.ts`, Tailwind-стили и файлы запуска. Вся UI-логика вынесена в
+NX-библиотеки:
+
+- `app/client-libs/api-client` — транспорт на `ofetch`, API-модули и
+  Pinia-сторы с состоянием игры, инвентарём и каталогами.
+- `app/client-libs/client-core` — форматирование, работа с `localStorage` и
+  визуальные утилиты.
+- `app/client-libs/client-ui` — атомарные компоненты интерфейса: кнопки,
+  карточки, модальные окна, прогресс-бары и элементы навигации.
+- `app/client-libs/client-composables` — композаблы `usePetGame`,
+  `useShopCatalog`, `useAchievements`, `useDailyReward`, `useLeaderboard`,
+  `useSession` и `useNow`.
+- `app/client-libs/client-pet` — компоненты питомца и игрового экрана.
+- `app/client-libs/client-shop` — каталоги еды, улучшений и косметики.
+- `app/client-libs/client-progress` — достижения, ежедневные награды и
+  рейтинг.
+- `app/client-libs/client-pages` — страницы, экраны авторизации, layout-ы и
+  `ToastHost`.
+
+### Тесты клиента
+
+Клиентские unit-тесты написаны на Vitest и `@vue/test-utils`, запускаются в
+jsdom и покрывают транспорт, сторы, композаблы, компоненты, страницы и роутер:
+
+```bash
+cd app
+npm run test:client
+```
+
+Проверка типов, линтера и форматирования клиента:
+
+```bash
+npx nx run-many -t typecheck -p @org/client-core @org/api-client @org/client-ui @org/client-composables @org/client-pet @org/client-shop @org/client-progress @org/client-pages @org/client
+npx nx run-many -t lint -p @org/client-core @org/api-client @org/client-ui @org/client-composables @org/client-pet @org/client-shop @org/client-progress @org/client-pages @org/client
+npx prettier --check "client-libs/*/src/**/*.{ts,vue}" "services/client/src/**/*.{ts,vue}"
+```
 
 ### Особенности
 
